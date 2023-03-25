@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="rtlSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:layoutDirection">rtl</item>
+    </style>
+
+</resources>

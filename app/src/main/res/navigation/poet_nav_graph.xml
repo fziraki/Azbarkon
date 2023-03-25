@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/poetNavGraph"
+    app:startDestination="@id/poetListFragment">
+
+    <fragment
+        android:id="@+id/poetListFragment"
+        android:name="abkabk.azbarkon.features.poet.poet_list.PoetListFragment"
+        android:label="PoetListFragment" />
+</navigation>

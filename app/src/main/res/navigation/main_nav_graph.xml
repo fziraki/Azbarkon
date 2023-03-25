@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainNavGraph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="abkabk.azbarkon.SplashFragment"
+        android:label="SplashFragment">
+    <action
+        android:id="@+id/action_splashFragment_to_poetNavGraph"
+        app:popUpTo="@id/splashFragment"
+        app:popUpToInclusive="true"
+        app:destination="@id/poetNavGraph" />
+    </fragment>
+
+    <include app:graph="@navigation/poet_nav_graph"/>
+
+</navigation>

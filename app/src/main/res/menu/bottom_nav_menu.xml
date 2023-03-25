@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/PicGraph"
+        android:title="pic"
+        android:icon="@drawable/ic_photo"
+        />
+
+    <item
+        android:id="@+id/poetGraph"
+        android:title="home"
+        android:icon="@drawable/ic_home"
+        />
+
+    <item
+        android:id="@+id/likesGraph"
+        android:title="likes"
+        android:icon="@drawable/ic_like"
+        />
+
+</menu>
