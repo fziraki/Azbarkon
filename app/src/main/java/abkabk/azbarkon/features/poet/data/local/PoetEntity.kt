@@ -1,6 +1,6 @@
 package abkabk.azbarkon.features.poet.data.local
 
-import abkabk.azbarkon.features.poet.domain.model.Poet
+import abkabk.azbarkon.features.poet.domain.Poet
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,7 +12,6 @@ data class PoetEntity(
     val rootCatId: Int?,
     val imageUrl: String?
 ){
-
     fun toPoet(): Poet {
         return Poet(
             id = id,

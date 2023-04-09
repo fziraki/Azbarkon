@@ -17,4 +17,13 @@
 
     <include app:graph="@navigation/poet_nav_graph"/>
 
+    <fragment
+        android:id="@+id/editor"
+        android:name="abkabk.azbarkon.features.editor.EditorFragment"
+        android:label="EditorFragment" />
+    <fragment
+        android:id="@+id/likes"
+        android:name="abkabk.azbarkon.features.likes.LikesFragment"
+        android:label="LikesFragment" />
+
 </navigation>

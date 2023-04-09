@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/PicGraph"
-        android:title="pic"
+        android:id="@+id/editor"
+        android:title="editor"
         android:icon="@drawable/ic_photo"
         />
 
     <item
-        android:id="@+id/poetGraph"
-        android:title="home"
+        android:id="@+id/poetList"
+        android:title="poets"
         android:icon="@drawable/ic_home"
         />
 
     <item
-        android:id="@+id/likesGraph"
+        android:id="@+id/likes"
         android:title="likes"
         android:icon="@drawable/ic_like"
         />

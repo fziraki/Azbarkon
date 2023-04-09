@@ -1,7 +1,7 @@
 package abkabk.azbarkon.features.poet.poet_list
 
 import abkabk.azbarkon.databinding.ItemPoetBinding
-import abkabk.azbarkon.features.poet.domain.model.Poet
+import abkabk.azbarkon.features.poet.domain.Poet
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter

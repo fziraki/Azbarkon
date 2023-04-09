@@ -8,9 +8,11 @@ import androidx.room.Query
 @Dao
 interface PoetDao {
 
+    @Query("SELECT * FROM PoetEntity")
+    suspend fun getPoets(): List<PoetEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPoets(poets: List<PoetEntity>)
 
-    @Query("SELECT * FROM PoetEntity")
-    suspend fun getPoets(): List<PoetEntity>
+
 }

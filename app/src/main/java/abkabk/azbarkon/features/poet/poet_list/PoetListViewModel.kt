@@ -2,7 +2,6 @@ package abkabk.azbarkon.features.poet.poet_list
 
 import abkabk.azbarkon.core.Resource
 import abkabk.azbarkon.features.poet.domain.use_case.GetPoetListUseCase
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +27,6 @@ class PoetListViewModel @Inject constructor(
     private fun getPoets() {
         viewModelScope.launch {
             getPoetListUseCase().onEach { result ->
-                Log.d("tag","result")
                 when(result){
                     is Resource.Loading -> {
                         _state.value = state.value.copy(isLoading = true,

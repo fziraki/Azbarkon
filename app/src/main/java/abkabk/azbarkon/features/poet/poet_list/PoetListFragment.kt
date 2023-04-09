@@ -6,13 +6,15 @@ import abkabk.azbarkon.core.base.BaseFragment
 import abkabk.azbarkon.core.extension.autoCleared
 import abkabk.azbarkon.core.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoetListBinding
-import abkabk.azbarkon.features.poet.domain.model.Poet
+import abkabk.azbarkon.features.poet.domain.Poet
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +30,9 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
 
     private var poetsAdapter by autoCleared<PoetsAdapter>()
     private val poetItemClickListener = { poet: Poet ->
-        Toast.makeText(requireContext(), poet.name, Toast.LENGTH_SHORT).show()
+        findNavController()
+            .navigate(R.id.action_poetList_to_poetDetailsFragment,
+                bundleOf("poetId" to poet.id!!))
     }
 
     override fun setupScreen() {
@@ -41,6 +45,11 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
         viewModel.state
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach {
+                if (it.isLoading){
+                    showLoading()
+                }else{
+                    hideLoading()
+                }
                 poetsAdapter.setData(it.poetList)
                 if (it.poetList.isNotEmpty()){
                     viewBinding.searchview.visibility = View.VISIBLE
@@ -72,7 +81,6 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     poetsAdapter.filter.filter(it)
-//                    viewModel.onSearch(it)
                 }
                 return true
             }
@@ -80,7 +88,6 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let {
                     poetsAdapter.filter.filter(it)
-//                    viewModel.onSearch(it)
                 }
                 return true
             }

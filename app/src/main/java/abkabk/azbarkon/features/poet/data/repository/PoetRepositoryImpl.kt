@@ -1,10 +1,11 @@
 package abkabk.azbarkon.features.poet.data.repository
 
-import abkabk.azbarkon.features.poet.data.remote.PoetApi
-import abkabk.azbarkon.features.poet.domain.model.Poet
-import abkabk.azbarkon.features.poet.domain.repository.PoetRepository
 import abkabk.azbarkon.core.Resource
 import abkabk.azbarkon.features.poet.data.local.PoetDao
+import abkabk.azbarkon.features.poet.data.remote.PoetApi
+import abkabk.azbarkon.features.poet.domain.Poet
+import abkabk.azbarkon.features.poet.domain.PoetDetails
+import abkabk.azbarkon.features.poet.domain.repository.PoetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -41,5 +42,43 @@ class PoetRepositoryImpl @Inject constructor(
         emit(Resource.Success(newCachedPoets))
     }
 
+    override fun getPoetDetails(poetId: Int): Flow<Resource<PoetDetails>> = flow {
+
+        emit(Resource.Loading())
+
+        try {
+            val remotePoetDetails = poetApi.getPoetDetails(poetId)
+
+            emit(Resource.Success(remotePoetDetails.toPoetDetails()))
+        }catch (e: HttpException){
+            emit(Resource.Error(
+                message = e.message?:"Something went wrong!",
+            ))
+        }catch (e: IOException){
+            emit(Resource.Error(
+                message = "Couldn't reach server! check your connection.",
+            ))
+        }
+
+    }
+
+    override fun getSubCategories(catId: Int): Flow<Resource<PoetDetails>> = flow {
+
+        emit(Resource.Loading())
+
+        try {
+            val remoteSubCategories = poetApi.getSubCategories(catId)
+            emit(Resource.Success(remoteSubCategories.toPoetDetails()))
+        }catch (e: HttpException){
+            emit(Resource.Error(
+                message = e.message?:"Something went wrong!",
+            ))
+        }catch (e: IOException){
+            emit(Resource.Error(
+                message = "Couldn't reach server! check your connection.",
+            ))
+        }
+
+    }
 
 }

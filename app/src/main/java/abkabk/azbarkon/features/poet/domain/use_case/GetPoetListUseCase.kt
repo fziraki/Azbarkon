@@ -1,8 +1,8 @@
 package abkabk.azbarkon.features.poet.domain.use_case
 
-import abkabk.azbarkon.features.poet.domain.model.Poet
 import abkabk.azbarkon.features.poet.domain.repository.PoetRepository
 import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.features.poet.domain.Poet
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

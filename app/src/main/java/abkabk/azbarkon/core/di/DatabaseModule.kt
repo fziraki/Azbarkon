@@ -18,6 +18,7 @@ object DatabaseModule {
     fun provideAzbarkonDatabase(app: Application): AzbarkonDatabase {
         return Room.databaseBuilder(
             app, AzbarkonDatabase::class.java, "azbarkon_db"
-        ).build()
+        )
+        .build()
     }
 }
