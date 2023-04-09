@@ -1,0 +1,13 @@
+package abkabk.azbarkon.features.poet.domain.repository
+
+import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.features.poet.domain.Poet
+import abkabk.azbarkon.features.poet.domain.PoetDetails
+import kotlinx.coroutines.flow.Flow
+
+interface PoetRepository {
+    fun getPoetList() : Flow<Resource<List<Poet>>>
+    fun getPoetDetails(poetId: Int) : Flow<Resource<PoetDetails>>
+
+    fun getSubCategories(catId: Int) : Flow<Resource<PoetDetails>>
+}

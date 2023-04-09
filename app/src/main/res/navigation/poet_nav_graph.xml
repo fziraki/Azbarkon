@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/poetNavGraph"
+    app:startDestination="@id/poetList">
+
+    <fragment
+        android:id="@+id/poetList"
+        android:name="abkabk.azbarkon.features.poet.poet_list.PoetListFragment"
+        android:label="PoetListFragment" >
+        <action
+            android:id="@+id/action_poetList_to_poetDetailsFragment"
+            app:destination="@id/poetDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/poetDetailsFragment"
+        android:name="abkabk.azbarkon.features.poet.poet_details.PoetDetailsFragment"
+        android:label="PoetDetailsFragment" >
+        <argument
+            android:name="poetId"
+            app:argType="integer" />
+    </fragment>
+</navigation>
