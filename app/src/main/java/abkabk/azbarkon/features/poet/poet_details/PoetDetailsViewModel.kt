@@ -37,11 +37,11 @@ class PoetDetailsViewModel @Inject constructor(
                         _state.value = state.value.copy(isLoading = true)
                     }
                     is Resource.Success -> {
+                        val ancestors = result.data?.cat?.ancestors
                         _state.value = state.value.copy(isLoading = false,
                             poetImage = result.data?.poet?.loadableImageUrl,
                             poetName = result.data?.poet?.name,
-                            catId = if (result.data?.cat?.ancestors.isNullOrEmpty()){null}else{
-                                result.data?.cat?.ancestors?.get(result.data.cat.ancestors.lastIndex)?.id },
+                            catId = if (ancestors.isNullOrEmpty()){null}else{ancestors[ancestors.lastIndex].id},
                             children = result.data?.cat?.children
                         )
                     }
@@ -62,9 +62,9 @@ class PoetDetailsViewModel @Inject constructor(
                         _state.value = state.value.copy(isLoading = true)
                     }
                     is Resource.Success -> {
+                        val ancestors = result.data?.cat?.ancestors
                         _state.value = state.value.copy(isLoading = false,
-                            catId = if (result.data?.cat?.ancestors.isNullOrEmpty()){null}else{
-                                result.data?.cat?.ancestors?.get(result.data.cat.ancestors.lastIndex)?.id },
+                            catId = if (ancestors.isNullOrEmpty()){null}else{ancestors[ancestors.lastIndex].id},
                             children = result.data?.cat?.children
                         )
                     }
