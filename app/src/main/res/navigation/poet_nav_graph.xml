@@ -19,5 +19,32 @@
         <argument
             android:name="poetId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_poetDetailsFragment_to_poemList"
+            app:destination="@id/poemList" />
+
+
     </fragment>
+
+    <fragment
+        android:id="@+id/poemList"
+        android:name="abkabk.azbarkon.features.poem.poem_list.PoemListFragment"
+        android:label="PoemListFragment" >
+
+        <argument
+            android:name="catId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_poemList_to_poemDetailsFragment"
+            app:destination="@id/poemDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/poemDetailsFragment"
+        android:name="abkabk.azbarkon.features.poem.poem_details.PoemDetailsFragment"
+        android:label="PoemDetailsFragment" >
+        <argument
+            android:name="poemId"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

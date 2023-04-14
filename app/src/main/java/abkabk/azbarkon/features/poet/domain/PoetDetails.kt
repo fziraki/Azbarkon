@@ -24,11 +24,18 @@ data class Cat(
     val id: Int,
     val title: String,
     val children: List<Children>? = null,
-    val ancestors: List<Children>? = null
+    val ancestors: List<Children>? = null,
+    val poems: List<Poem>? = null
 )
 
 data class Children(
     val id: Int,
     val title: String,
     val catType: Int
+)
+
+data class Poem(
+    val id: Int,
+    val title: String,
+    val excerpt: String
 )

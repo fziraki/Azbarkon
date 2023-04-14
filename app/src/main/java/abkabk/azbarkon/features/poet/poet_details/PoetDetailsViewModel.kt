@@ -42,7 +42,8 @@ class PoetDetailsViewModel @Inject constructor(
                             poetImage = result.data?.poet?.loadableImageUrl,
                             poetName = result.data?.poet?.name,
                             catId = if (ancestors.isNullOrEmpty()){null}else{ancestors[ancestors.lastIndex].id},
-                            children = result.data?.cat?.children
+                            children = result.data?.cat?.children,
+                            poems = result.data?.cat?.poems
                         )
                     }
                     is Resource.Error -> {
@@ -65,7 +66,9 @@ class PoetDetailsViewModel @Inject constructor(
                         val ancestors = result.data?.cat?.ancestors
                         _state.value = state.value.copy(isLoading = false,
                             catId = if (ancestors.isNullOrEmpty()){null}else{ancestors[ancestors.lastIndex].id},
-                            children = result.data?.cat?.children
+                            childId = childId,
+                            children = result.data?.cat?.children,
+                            poems = result.data?.cat?.poems
                         )
                     }
                     is Resource.Error -> {

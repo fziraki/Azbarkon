@@ -10,6 +10,7 @@ import abkabk.azbarkon.features.poet.domain.Children
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -58,6 +59,13 @@ class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
 
                 poetDetailsState.children?.let { children ->
                     childrenAdapter.setData(children)
+                }
+
+                if (poetDetailsState.poems?.isNotEmpty() == true){
+                    findNavController()
+                        .navigate(R.id.action_poetDetailsFragment_to_poemList,
+                            bundleOf("catId" to poetDetailsState.childId)
+                        )
                 }
 
                 activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {

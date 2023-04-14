@@ -2,10 +2,7 @@ package abkabk.azbarkon.features.poet.data.remote
 
 
 import abkabk.azbarkon.features.poet.data.local.PoetEntity
-import abkabk.azbarkon.features.poet.domain.Cat
-import abkabk.azbarkon.features.poet.domain.Children
-import abkabk.azbarkon.features.poet.domain.Poet
-import abkabk.azbarkon.features.poet.domain.PoetDetails
+import abkabk.azbarkon.features.poet.domain.*
 import com.google.gson.annotations.SerializedName
 
 data class PoetDetailsDto(
@@ -63,14 +60,17 @@ data class CatDto(
     @SerializedName("children")
     val children: List<ChildrenDto>? = null,
     @SerializedName("ancestors")
-    val ancestors: List<ChildrenDto>? = null
+    val ancestors: List<ChildrenDto>? = null,
+    @SerializedName("poems")
+    val poems: List<PoemDto>? = null
 ){
     fun toCat(): Cat{
         return Cat(
             id = id,
             title = title,
             children = children?.map { it.toChildren() },
-            ancestors = ancestors?.map { it.toChildren() }
+            ancestors = ancestors?.map { it.toChildren() },
+            poems = poems?.map { it.toPoem() }
         )
     }
 
@@ -89,6 +89,24 @@ data class ChildrenDto(
             id = id,
             title = title,
             catType = catType
+        )
+    }
+
+}
+
+data class PoemDto(
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("title")
+    val title: String,
+    @SerializedName("excerpt")
+    val excerpt: String
+){
+    fun toPoem(): Poem {
+        return Poem(
+            id = id,
+            title = title,
+            excerpt = excerpt
         )
     }
 
