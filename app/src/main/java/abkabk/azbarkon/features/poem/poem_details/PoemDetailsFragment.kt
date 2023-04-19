@@ -4,7 +4,6 @@ import abkabk.azbarkon.R
 import abkabk.azbarkon.core.base.BaseFragment
 import abkabk.azbarkon.core.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoemDetailsBinding
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -20,18 +19,11 @@ class PoemDetailsFragment: BaseFragment(R.layout.fragment_poem_details) {
     private val viewBinding by viewBinding(FragmentPoemDetailsBinding::bind)
     private val viewModel: PoemDetailsViewModel by viewModels()
 
-//    private var childrenAdapter by autoCleared<ChildrenAdapter>()
-//    private val childItemClickListener = { child: Children ->
-//        viewModel.getCategories(child.id)
-//    }
-
     override fun setupScreen() {
 
     }
 
     override fun setupObservers() {
-
-//        initRecyclerView()
 
         viewModel.state
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -51,7 +43,7 @@ class PoemDetailsFragment: BaseFragment(R.layout.fragment_poem_details) {
                         val html = it
                             .replace("class=\"m1\"","style=\'text-align: right;\'")
                             .replace("class=\"m2\"","style=\'text-align: left;\'")
-                        Log.d("tagg","html $html")
+                            .replace("class=\"b2\"","style=\'text-align: center;\'")
                         loadData(html, "text/html", "UTF-8")
                     }
                 }

@@ -2,7 +2,7 @@ package abkabk.azbarkon.features.poem.poem_list
 
 import abkabk.azbarkon.core.Constants
 import abkabk.azbarkon.core.Resource
-import abkabk.azbarkon.features.poet.domain.use_case.GetSubCategoriesUseCase
+import abkabk.azbarkon.features.poem.domain.use_case.GetPoemsUseCase
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PoemListViewModel @Inject constructor(
-    private val getSubCategoriesUseCase: GetSubCategoriesUseCase,
+    private val getPoemsUseCase: GetPoemsUseCase,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -29,7 +29,7 @@ class PoemListViewModel @Inject constructor(
 
     private fun getPoems(catId: Int) {
         viewModelScope.launch {
-            getSubCategoriesUseCase(catId).onEach { result ->
+            getPoemsUseCase(catId).onEach { result ->
                 when(result){
                     is Resource.Loading -> {
                         _state.value = state.value.copy(isLoading = true)

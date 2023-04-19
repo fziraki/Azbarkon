@@ -42,26 +42,6 @@ class PoetRepositoryImpl @Inject constructor(
         emit(Resource.Success(newCachedPoets))
     }
 
-    override fun getPoetDetails(poetId: Int): Flow<Resource<PoetDetails>> = flow {
-
-        emit(Resource.Loading())
-
-        try {
-            val remotePoetDetails = poetApi.getPoetDetails(poetId)
-
-            emit(Resource.Success(remotePoetDetails.toPoetDetails()))
-        }catch (e: HttpException){
-            emit(Resource.Error(
-                message = e.message?:"Something went wrong!",
-            ))
-        }catch (e: IOException){
-            emit(Resource.Error(
-                message = "Couldn't reach server! check your connection.",
-            ))
-        }
-
-    }
-
     override fun getSubCategories(catId: Int): Flow<Resource<PoetDetails>> = flow {
 
         emit(Resource.Loading())

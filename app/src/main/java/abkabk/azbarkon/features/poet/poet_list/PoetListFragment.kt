@@ -32,7 +32,7 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
     private val poetItemClickListener = { poet: Poet ->
         findNavController()
             .navigate(R.id.action_poetList_to_poetDetailsFragment,
-                bundleOf("poetId" to poet.id!!))
+                bundleOf("poet" to poet))
     }
 
     override fun setupScreen() {

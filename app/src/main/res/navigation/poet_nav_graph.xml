@@ -16,12 +16,12 @@
         android:id="@+id/poetDetailsFragment"
         android:name="abkabk.azbarkon.features.poet.poet_details.PoetDetailsFragment"
         android:label="PoetDetailsFragment" >
-        <argument
-            android:name="poetId"
-            app:argType="integer" />
         <action
             android:id="@+id/action_poetDetailsFragment_to_poemList"
             app:destination="@id/poemList" />
+        <argument
+            android:name="poet"
+            app:argType="abkabk.azbarkon.features.poet.domain.Poet" />
 
 
     </fragment>

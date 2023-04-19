@@ -4,6 +4,7 @@ import abkabk.azbarkon.features.poem.data.remote.PoemApi
 import abkabk.azbarkon.features.poem.data.repository.PoemRepositoryImpl
 import abkabk.azbarkon.features.poem.domain.repository.PoemRepository
 import abkabk.azbarkon.features.poem.domain.use_case.GetPoemDetailsUseCase
+import abkabk.azbarkon.features.poem.domain.use_case.GetPoemsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +20,12 @@ object PoemModule {
     @ViewModelScoped
     fun provideGetPoemDetailsUseCase(poemRepository: PoemRepository): GetPoemDetailsUseCase {
         return GetPoemDetailsUseCase(poemRepository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetPoemsUseCase(poemRepository: PoemRepository): GetPoemsUseCase {
+        return GetPoemsUseCase(poemRepository)
     }
 
 

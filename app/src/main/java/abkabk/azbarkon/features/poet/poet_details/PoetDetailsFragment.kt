@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
 
+    override var defaultHandleBackStack = false
+
     private val viewBinding by viewBinding(FragmentPoetDetailsBinding::bind)
     private val viewModel: PoetDetailsViewModel by viewModels()
 
@@ -38,6 +40,19 @@ class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
 
     override fun setupObservers() {
 
+        viewModel.eventFlow
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                when(it){
+                    is PoetDetailsViewModel.UiEvent.ShowSnackbar -> {
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is PoetDetailsViewModel.UiEvent.Navigate -> {
+                        findNavController().navigate(it.action, it.bundle)
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
         initRecyclerView()
 
         viewModel.state
@@ -50,41 +65,38 @@ class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
                     hideLoading()
                 }
 
-                Glide
-                    .with(requireContext())
-                    .load(poetDetailsState.poetImage)
-                    .into(viewBinding.poetImg)
+                poetDetailsState.poet?.let {
+                    Glide
+                        .with(requireContext())
+                        .load(it.loadableImageUrl)
+                        .into(viewBinding.poetImg)
 
-                viewBinding.poetName.text = poetDetailsState.poetName
+                    viewBinding.poetName.text = it.name
+                }
 
                 poetDetailsState.children?.let { children ->
                     childrenAdapter.setData(children)
                 }
 
-                if (poetDetailsState.poems?.isNotEmpty() == true){
-                    findNavController()
-                        .navigate(R.id.action_poetDetailsFragment_to_poemList,
-                            bundleOf("catId" to poetDetailsState.childId)
-                        )
+                if (poetDetailsState.children?.isEmpty() == true){
+                    viewModel.shouldNavigate(
+                        R.id.action_poetDetailsFragment_to_poemList,
+                        bundleOf("catId" to poetDetailsState.catId)
+                    )
                 }
 
                 activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
-                        poetDetailsState.catId?.let {
-                            viewModel.getCategories(it)
-                        }?:run {
+                        if (poetDetailsState.poet?.rootCatId == poetDetailsState.catId){
                             findNavController().popBackStack()
+                        }else{
+                            viewModel.restore()
                         }
                     }
                 })
 
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.uiEvent
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initRecyclerView() {

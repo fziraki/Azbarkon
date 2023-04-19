@@ -1,9 +1,11 @@
 package abkabk.azbarkon.features.poet.poet_details
 
-import abkabk.azbarkon.core.Constants.POET_ID
 import abkabk.azbarkon.core.Resource
-import abkabk.azbarkon.features.poet.domain.use_case.GetPoetDetailsUseCase
+import abkabk.azbarkon.features.poet.domain.Poet
 import abkabk.azbarkon.features.poet.domain.use_case.GetSubCategoriesUseCase
+import abkabk.azbarkon.features.poet.poet_details.memento.Editor
+import abkabk.azbarkon.features.poet.poet_details.memento.History
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,70 +16,76 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PoetDetailsViewModel @Inject constructor(
-    private val getPoetDetailsUseCase: GetPoetDetailsUseCase,
     private val getSubCategoriesUseCase: GetSubCategoriesUseCase,
+    private val editor: Editor,
+    private val history: History,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val _state = MutableStateFlow(PoetDetailsState())
     val state = _state.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<String>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String): UiEvent()
+        data class Navigate(val action: Int, val bundle: Bundle) : UiEvent()
+    }
     init {
-        savedStateHandle.get<Int>(POET_ID)?.let { getPoetDetails(it) }
+        savedStateHandle.get<Poet>("poet")?.let {
+            it.rootCatId?.let { rootCatId ->
+                _state.value = state.value.copy(poet = it, catId = rootCatId)
+                getCategories(rootCatId)
+            }
+        }
     }
 
-    private fun getPoetDetails(poetId: Int) {
+    fun getCategories(catId: Int) {
         viewModelScope.launch {
-            getPoetDetailsUseCase(poetId).onEach { result ->
+            getSubCategoriesUseCase(catId).collect { result ->
                 when(result){
                     is Resource.Loading -> {
                         _state.value = state.value.copy(isLoading = true)
                     }
                     is Resource.Success -> {
-                        val ancestors = result.data?.cat?.ancestors
-                        _state.value = state.value.copy(isLoading = false,
-                            poetImage = result.data?.poet?.loadableImageUrl,
-                            poetName = result.data?.poet?.name,
-                            catId = if (ancestors.isNullOrEmpty()){null}else{ancestors[ancestors.lastIndex].id},
+                        val currentState = state.value.copy(isLoading = false,
+                            catId = catId,
                             children = result.data?.cat?.children,
-                            poems = result.data?.cat?.poems
                         )
+                        //save state before set it because of empty categories things go wrong
+                        saveState(currentState)
+                        _state.value = currentState
                     }
                     is Resource.Error -> {
                         _state.value = state.value.copy(isLoading = false)
-                        result.message?.let { _uiEvent.emit(it) }
+                        result.message?.let { _eventFlow.emit(UiEvent.ShowSnackbar(it)) }
                     }
                 }
-            }.launchIn(this)
+            }
         }
     }
 
-    fun getCategories(childId: Int) {
+    fun restore() {
+        editor.restoreState(history.pop())
+        editor.contenttt.asStateFlow().onEach {
+            _state.value = state.value.copy(
+                catId = it.catId,
+                children = it.children,
+            )
+        }.launchIn(viewModelScope)
+    }
+
+    fun shouldNavigate(action: Int, bundle: Bundle) {
         viewModelScope.launch {
-            getSubCategoriesUseCase(childId).onEach { result ->
-                when(result){
-                    is Resource.Loading -> {
-                        _state.value = state.value.copy(isLoading = true)
-                    }
-                    is Resource.Success -> {
-                        val ancestors = result.data?.cat?.ancestors
-                        _state.value = state.value.copy(isLoading = false,
-                            catId = if (ancestors.isNullOrEmpty()){null}else{ancestors[ancestors.lastIndex].id},
-                            childId = childId,
-                            children = result.data?.cat?.children,
-                            poems = result.data?.cat?.poems
-                        )
-                    }
-                    is Resource.Error -> {
-                        _state.value = state.value.copy(isLoading = false)
-                        result.message?.let { _uiEvent.emit(it) }
-                    }
-                }
-            }.launchIn(this)
+            restore()
+            _eventFlow.emit(UiEvent.Navigate(action, bundle))
         }
+    }
+
+    private fun saveState(currentState: PoetDetailsState) {
+        editor.content = currentState
+        history.push(editor.createState())
     }
 
 

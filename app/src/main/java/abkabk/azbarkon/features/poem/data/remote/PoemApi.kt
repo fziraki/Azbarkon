@@ -1,10 +1,18 @@
 package abkabk.azbarkon.features.poem.data.remote
 
+import abkabk.azbarkon.features.poet.data.remote.PoetDetailsDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PoemApi {
+
+    @GET("api/ganjoor/cat/{catId}")
+    suspend fun getPoems(
+        @Path("catId") catId: Int,
+        @Query("poems") poems: Boolean = true,
+        @Query("mainSections") mainSections: Boolean = false
+    ) : PoetDetailsDto
 
     @GET("api/ganjoor/poem/{poemId}")
     suspend fun getPoemDetails(
