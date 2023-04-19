@@ -1,0 +1,15 @@
+package abkabk.azbarkon.features.poem.domain.use_case
+
+import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.features.poem.domain.PoemDetails
+import abkabk.azbarkon.features.poem.domain.repository.PoemRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class GetPoemDetailsUseCase @Inject constructor(
+    private val poemRepository: PoemRepository
+) {
+    operator fun invoke(poemId: Int): Flow<Resource<PoemDetails>> {
+        return poemRepository.getPoemDetails(poemId)
+    }
+}

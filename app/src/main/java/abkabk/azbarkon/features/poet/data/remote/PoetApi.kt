@@ -9,12 +9,6 @@ interface PoetApi {
     @GET("api/ganjoor/poets")
     suspend fun getPoetList() : List<PoetDto>
 
-    @GET("api/ganjoor/poet/{poetId}")
-    suspend fun getPoetDetails(
-        @Path("poetId") poetId: Int,
-        @Query("catPoems") catPoems: Boolean = false
-    ) : PoetDetailsDto
-
     @GET("api/ganjoor/cat/{catId}")
     suspend fun getSubCategories(
         @Path("catId") catId: Int,

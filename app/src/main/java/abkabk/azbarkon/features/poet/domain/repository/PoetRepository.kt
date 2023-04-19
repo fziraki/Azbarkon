@@ -7,7 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PoetRepository {
     fun getPoetList() : Flow<Resource<List<Poet>>>
-    fun getPoetDetails(poetId: Int) : Flow<Resource<PoetDetails>>
-
     fun getSubCategories(catId: Int) : Flow<Resource<PoetDetails>>
 }

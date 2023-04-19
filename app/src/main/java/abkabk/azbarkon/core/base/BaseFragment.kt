@@ -7,14 +7,16 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 abstract class BaseFragment(
     @LayoutRes contentLayoutId: Int
-) : Fragment(contentLayoutId){
+) : Fragment(contentLayoutId), BackStackHandler{
 
     private lateinit var myActivity: BaseActivity
     protected open var bottomNavigationViewVisibility = View.GONE
     private var loadingDialog: AlertDialog? = null
+    protected open var defaultHandleBackStack = true
 
     fun showLoading(){
         loadingDialog?.dismiss()
@@ -51,6 +53,10 @@ abstract class BaseFragment(
 
     abstract fun setupObservers()
 
-
+    override fun onBackPressed() {
+        if (defaultHandleBackStack){
+            findNavController().popBackStack()
+        }
+    }
 
 }
