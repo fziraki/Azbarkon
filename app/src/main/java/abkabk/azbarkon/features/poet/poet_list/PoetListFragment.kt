@@ -7,6 +7,7 @@ import abkabk.azbarkon.core.extension.autoCleared
 import abkabk.azbarkon.core.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoetListBinding
 import abkabk.azbarkon.features.poet.domain.Poet
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -50,8 +51,9 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
                 }else{
                     hideLoading()
                 }
-                poetsAdapter.setData(it.poetList)
                 if (it.poetList.isNotEmpty()){
+                    Log.d("tag","hi")
+                    poetsAdapter.setData(it.poetList)
                     viewBinding.searchview.visibility = View.VISIBLE
                 }else{
                     viewBinding.searchview.visibility = View.GONE
@@ -79,15 +81,19 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
     private fun initSearchView() {
         viewBinding.searchview.setOnQueryTextListener(object : OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    poetsAdapter.filter.filter(it)
+                if (!viewBinding.searchview.isIconified) {
+                    query?.let {
+                        poetsAdapter.filter.filter(it)
+                    }
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    poetsAdapter.filter.filter(it)
+                if (!viewBinding.searchview.isIconified){
+                    newText?.let {
+                        poetsAdapter.filter.filter(it)
+                    }
                 }
                 return true
             }
