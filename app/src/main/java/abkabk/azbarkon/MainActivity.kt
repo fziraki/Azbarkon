@@ -1,6 +1,6 @@
 package abkabk.azbarkon
 
-import abkabk.azbarkon.core.base.BaseActivity
+import abkabk.azbarkon.common.base.BaseActivity
 import abkabk.azbarkon.databinding.ActivityMainBinding
 import android.os.Bundle
 import android.view.View
@@ -40,4 +40,21 @@ class MainActivity : BaseActivity() {
         viewBinding.bottomNavigation.visibility = View.GONE
         viewBinding.shadow.visibility = View.GONE
     }
+
+    override fun showToolbar() {
+        viewBinding.toolbar.root.visibility = View.VISIBLE
+    }
+
+    override fun hideToolbar() {
+        viewBinding.toolbar.root.visibility = View.GONE
+    }
+
+    override fun setToolbarTitle(title: String, backVisibility: Int) {
+        viewBinding.toolbar.title.text = title
+        viewBinding.toolbar.back.visibility = backVisibility
+        viewBinding.toolbar.back.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
 }

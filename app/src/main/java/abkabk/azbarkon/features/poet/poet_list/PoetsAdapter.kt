@@ -1,23 +1,32 @@
 package abkabk.azbarkon.features.poet.poet_list
 
 import abkabk.azbarkon.databinding.ItemPoetBinding
-import abkabk.azbarkon.features.poet.domain.Poet
+import abkabk.azbarkon.features.poet.model.PoetUi
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class PoetsAdapter(
-    private val clickListener: (Poet) -> Unit
-) : ListAdapter<Poet, PoetViewHolder>(PoetDiffUtil) , Filterable{
+    private val clickListener: (PoetUi) -> Unit,
+) : ListAdapter<PoetUi, PoetViewHolder>(PoetUiDiffUtil) , Filterable{
 
-    private var list = listOf<Poet>()
+    init {
+        setHasStableIds(true)
+    }
 
-    fun setData(list: List<Poet>){
+    var tracker: SelectionTracker<Long>? = null
+
+    private var list = listOf<PoetUi>()
+
+    fun setData(list: List<PoetUi>){
         this.list = list
         submitList(list)
     }
@@ -34,8 +43,12 @@ class PoetsAdapter(
     }
 
     override fun onBindViewHolder(holder: PoetViewHolder, position: Int) {
-        holder.bindData(currentList[position])
+        tracker?.let {
+            holder.bindData(currentList[position], it.isSelected(currentList[position].id!!.toLong()))
+        }
     }
+
+    override fun getItemId(position: Int) = currentList[position].id!!.toLong()
 
     override fun getFilter(): Filter {
         return customFilter
@@ -43,7 +56,7 @@ class PoetsAdapter(
 
     private val customFilter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
-            val filteredList = mutableListOf<Poet>()
+            val filteredList = mutableListOf<PoetUi>()
             if (constraint == null || constraint.isEmpty()) {
                 filteredList.addAll(list)
             } else {
@@ -59,7 +72,7 @@ class PoetsAdapter(
         }
 
         override fun publishResults(constraint: CharSequence?, filterResults: FilterResults?) {
-            submitList(filterResults?.values as MutableList<Poet>)
+            submitList(filterResults?.values as MutableList<PoetUi>)
         }
 
     }
@@ -71,7 +84,7 @@ class PoetsAdapter(
 
 class PoetViewHolder(
     private val viewBinding: ItemPoetBinding,
-    private val itemClickListener: (Poet) -> Unit
+    private val itemClickListener: (PoetUi) -> Unit
 ) : RecyclerView.ViewHolder(viewBinding.root){
 
     init {
@@ -79,27 +92,43 @@ class PoetViewHolder(
         }
     }
 
-    fun bindData(poet: Poet) {
+    fun bindData(poetUi: PoetUi, isActivated: Boolean = false) {
         with(viewBinding) {
+
+            itemView.isActivated = isActivated
+
             root.setOnClickListener {
-                itemClickListener(poet)
+                itemClickListener(poetUi)
             }
-            poetName.text = poet.name
+
+            poetName.text = poetUi.name
 
             Glide
                 .with(itemView.context)
-                .load(poet.loadableImageUrl)
+                .load(poetUi.loadableImageUrl)
                 .into(poetImg)
+
+            if (poetUi.isPinned){
+                pinImg.visibility = View.VISIBLE
+            }else{
+                pinImg.visibility = View.GONE
+            }
         }
     }
+
+    fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
+        object : ItemDetailsLookup.ItemDetails<Long>() {
+            override fun getPosition(): Int = adapterPosition
+            override fun getSelectionKey(): Long = itemId
+        }
 }
 
 
-object PoetDiffUtil : DiffUtil.ItemCallback<Poet>() {
-    override fun areItemsTheSame(oldItem: Poet, newItem: Poet): Boolean {
+object PoetUiDiffUtil : DiffUtil.ItemCallback<PoetUi>() {
+    override fun areItemsTheSame(oldItem: PoetUi, newItem: PoetUi): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Poet, newItem: Poet): Boolean =
+    override fun areContentsTheSame(oldItem: PoetUi, newItem: PoetUi): Boolean =
         oldItem == newItem
 }

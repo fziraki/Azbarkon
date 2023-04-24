@@ -1,8 +1,8 @@
 package abkabk.azbarkon.features.poet.poet_details
 
-import abkabk.azbarkon.core.Resource
-import abkabk.azbarkon.features.poet.domain.Poet
+import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poet.domain.use_case.GetSubCategoriesUseCase
+import abkabk.azbarkon.features.poet.model.PoetUi
 import abkabk.azbarkon.features.poet.poet_details.memento.Editor
 import abkabk.azbarkon.features.poet.poet_details.memento.History
 import android.os.Bundle
@@ -33,7 +33,7 @@ class PoetDetailsViewModel @Inject constructor(
         data class Navigate(val action: Int, val bundle: Bundle) : UiEvent()
     }
     init {
-        savedStateHandle.get<Poet>("poet")?.let {
+        savedStateHandle.get<PoetUi>("poet")?.let {
             it.rootCatId?.let { rootCatId ->
                 _state.value = state.value.copy(poet = it, catId = rootCatId)
                 getCategories(rootCatId)

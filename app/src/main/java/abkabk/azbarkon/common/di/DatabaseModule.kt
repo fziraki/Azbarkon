@@ -1,6 +1,6 @@
-package abkabk.azbarkon.core.di
+package abkabk.azbarkon.common.di
 
-import abkabk.azbarkon.core.AzbarkonDatabase
+import abkabk.azbarkon.common.AzbarkonDatabase
 import android.app.Application
 import androidx.room.Room
 import dagger.Module

@@ -1,9 +1,10 @@
 package abkabk.azbarkon.features.poem.poem_details
 
 import abkabk.azbarkon.R
-import abkabk.azbarkon.core.base.BaseFragment
-import abkabk.azbarkon.core.extension.viewBinding
+import abkabk.azbarkon.common.base.BaseFragment
+import abkabk.azbarkon.common.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoemDetailsBinding
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -35,7 +36,9 @@ class PoemDetailsFragment: BaseFragment(R.layout.fragment_poem_details) {
                     hideLoading()
                 }
 
-                viewBinding.poemFullTitle.text = poemDetailsState.poemDetails?.fullTitle
+                poemDetailsState.poemDetails?.fullTitle?.let {
+                    initTitle(it, View.VISIBLE)
+                }
 
                 viewBinding.poem.apply {
                     setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.color_c7b299))

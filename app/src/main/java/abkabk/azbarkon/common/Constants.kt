@@ -1,4 +1,4 @@
-package abkabk.azbarkon.core
+package abkabk.azbarkon.common
 
 object Constants {
 

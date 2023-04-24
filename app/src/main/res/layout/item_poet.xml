@@ -15,6 +15,16 @@
         android:layout_marginBottom="16dp">
 
         <ImageView
+            android:id="@+id/pinImg"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="6dp"
+            android:src="@drawable/ic_pin_two_tone"
+            app:tint="@color/color_8b7160" />
+
+        <ImageView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +47,13 @@
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/selectable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/poet_bg"
+        />
 
 
 

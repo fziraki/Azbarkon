@@ -1,6 +1,6 @@
 package abkabk.azbarkon.features.poet.data.repository
 
-import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poet.data.local.PoetDao
 import abkabk.azbarkon.features.poet.data.remote.PoetApi
 import abkabk.azbarkon.features.poet.domain.Poet

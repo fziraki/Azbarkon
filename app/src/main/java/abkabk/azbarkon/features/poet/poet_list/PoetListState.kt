@@ -1,8 +1,8 @@
 package abkabk.azbarkon.features.poet.poet_list
 
-import abkabk.azbarkon.features.poet.domain.Poet
+import abkabk.azbarkon.features.poet.model.PoetUi
 
 data class PoetListState(
     var isLoading: Boolean = false,
-    var poetList: List<Poet> = emptyList()
+    var poetList: List<PoetUi> = emptyList()
 )
