@@ -2,4 +2,6 @@
     <string name="app_name">Azbarkon</string>
     <string name="likes">پسندها</string>
     <string name="poetry_pic">شعرنمایه</string>
+    <string name="pin">پین کردن</string>
+    <string name="unpin">برداشتن پین</string>
 </resources>

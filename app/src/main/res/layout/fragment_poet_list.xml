@@ -20,14 +20,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/pin"
+            <TextView
+                android:id="@+id/togglePin"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:gravity="start|center_vertical"
                 android:paddingHorizontal="16dp"
-                android:src="@drawable/ic_filled_pin"
-                app:tint="@color/color_efeddd" />
+                android:textSize="18sp"
+                tools:text="@string/unpin"
+                android:textColor="@color/color_efeddd"
+                />
 
             <TextView
                 android:id="@+id/selectedItemsCount"

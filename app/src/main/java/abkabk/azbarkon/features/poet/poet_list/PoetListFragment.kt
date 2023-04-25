@@ -1,6 +1,8 @@
 package abkabk.azbarkon.features.poet.poet_list
 
 import abkabk.azbarkon.R
+import abkabk.azbarkon.common.Constants.MY_SELECTION
+import abkabk.azbarkon.common.Constants.POET_KEY
 import abkabk.azbarkon.common.SpaceItemDecoration
 import abkabk.azbarkon.common.base.BaseFragment
 import abkabk.azbarkon.common.extension.autoCleared
@@ -39,21 +41,46 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
     private val poetItemClickListener = { poet: PoetUi ->
         findNavController()
             .navigate(R.id.action_poetList_to_poetDetailsFragment,
-                bundleOf("poet" to poet))
+                bundleOf(POET_KEY to poet))
     }
 
     override fun setupScreen() {
         initRecyclerView()
+        initTracker()
         initSearchView()
         viewBinding.close.setOnClickListener {
             viewBinding.contextMenu.visibility = View.GONE
         }
-        viewBinding.pin.setOnClickListener {
-            viewModel.pinUnpin()
+        viewBinding.togglePin.setOnClickListener {
+            viewModel.onUiEvent(
+                PoetListViewModel.UiEvent.TogglePin(
+                    shouldPin = viewBinding.togglePin.text.toString() ==
+                                resources.getString(R.string.pin)
+                )
+            )
         }
     }
 
     override fun setupObservers() {
+
+        viewModel.uiEvent
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { uiEvent ->
+                when(uiEvent){
+                    is PoetListViewModel.UiEvent.ShowSnackbar -> {
+                        Toast.makeText(requireContext(), uiEvent.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {}
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.togglePinText
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach {
+                it?.let {
+                    viewBinding.togglePin.text = it.asString(requireContext())
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.state
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -75,26 +102,29 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.uiEvent
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         myTracker?.addObserver(
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
-                    val items = myTracker?.selection!!.size()
-                    if (items>0){
-                        viewBinding.contextMenu.visibility = View.VISIBLE
-                        viewBinding.selectedItemsCount.text = items.toString()
-                    }else{
-                        viewBinding.contextMenu.visibility = View.GONE
+
+                    myTracker?.selection?.size()?.let { itemsSize ->
+                        if (itemsSize>0){
+                            viewBinding.contextMenu.visibility = View.VISIBLE
+                            viewBinding.selectedItemsCount.text = itemsSize.toString()
+                        }else{
+                            viewBinding.contextMenu.visibility = View.GONE
+                        }
                     }
-                    if (myTracker?.hasSelection() == true){
-                        viewModel.saveSelectedItemsIds(myTracker!!.selection)
+
+                    myTracker?.hasSelection()?.let {
+                        viewModel.onUiEvent(
+                            PoetListViewModel
+                                .UiEvent
+                                .OnSelectionChanged(myTracker!!.selection)
+                        )
                     }
+
                 }
             })
 
@@ -108,8 +138,13 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
             layoutManager = StaggeredGridLayoutManager(4,RecyclerView.VERTICAL)
             layoutDirection = View.LAYOUT_DIRECTION_RTL
             addItemDecoration(SpaceItemDecoration(10))
+        }
+    }
+
+    private fun initTracker(){
+        with(viewBinding.poetListRv) {
             myTracker = SelectionTracker.Builder(
-                "mySelection",
+                MY_SELECTION,
                 this,
                 MyItemKeyProvider(this),
                 MyItemDetailsLookup(this),

@@ -1,6 +1,8 @@
 package abkabk.azbarkon.features.poet.poet_list
 
+import abkabk.azbarkon.R
 import abkabk.azbarkon.common.Resource
+import abkabk.azbarkon.common.UiText
 import abkabk.azbarkon.features.poet.domain.use_case.GetPinnedPoetListUseCase
 import abkabk.azbarkon.features.poet.domain.use_case.GetPoetListUseCase
 import abkabk.azbarkon.features.poet.domain.use_case.PinPoetListUseCase
@@ -28,18 +30,46 @@ class PoetListViewModel @Inject constructor(
     private val _selectedPoetsIds = MutableStateFlow<List<Int>>(emptyList())
 
     private val _poetsState = MutableStateFlow<List<PoetUi>>(emptyList())
-    val poetsState = _poetsState.asStateFlow()
 
     private val _pinnedPoetsState = MutableStateFlow<List<Int>>(emptyList())
-    val pinnedPoetsState = _pinnedPoetsState.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<String>()
+    private val _togglePinText = MutableStateFlow<UiText.StringResource?>(null)
+    val togglePinText = _togglePinText.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        getPoets()
         getPinnedPoets()
+        getPoets()
         combinePoetsToPinnedToGetPoets()
+    }
+
+    private fun setTogglePinText() {
+        _state.value.poetList.filter { poet ->
+            _selectedPoetsIds.value.any { it == poet.id }
+        }.find { !it.isPinned }?.let {
+            _togglePinText.value = UiText.StringResource(resId = R.string.pin)
+        }?: run {
+            _togglePinText.value = UiText.StringResource(resId = R.string.unpin)
+        }
+    }
+
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String): UiEvent()
+
+        data class OnSelectionChanged(val selection: Selection<Long>) : UiEvent()
+
+        data class TogglePin(val shouldPin: Boolean) : UiEvent()
+
+    }
+
+    fun onUiEvent(event: UiEvent){
+        when(event){
+            is UiEvent.ShowSnackbar -> {}
+            is UiEvent.OnSelectionChanged -> saveSelectedItemsIds(event.selection)
+            is UiEvent.TogglePin -> togglePin(event.shouldPin)
+        }
     }
 
     private fun combinePoetsToPinnedToGetPoets(){
@@ -73,7 +103,7 @@ class PoetListViewModel @Inject constructor(
                     is Resource.Error -> {
                         _state.value = state.value.copy(isLoading = false)
                         _poetsState.value = result.data?.map { it.toPoetUi() }?: emptyList()
-                        result.message?.let { _uiEvent.emit(it) }
+                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
                     }
                 }
             }.launchIn(this)
@@ -94,23 +124,22 @@ class PoetListViewModel @Inject constructor(
                     is Resource.Error -> {
                         _state.value = state.value.copy(isLoading = false)
                         _pinnedPoetsState.value = result.data?: emptyList()
-                        result.message?.let { _uiEvent.emit(it) }
+                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
                     }
                 }
             }
         }
     }
 
-    fun saveSelectedItemsIds(selection: Selection<Long>) {
+    private fun saveSelectedItemsIds(selection: Selection<Long>) {
         _selectedPoetsIds.value = selection.map { it.toInt() }
+        setTogglePinText()
     }
 
-    fun pinUnpin() {
-        _state.value.poetList.filter { poet ->
-            _selectedPoetsIds.value.any { it == poet.id }
-        }.find { !it.isPinned }?.let {
+    private fun togglePin(shouldPin: Boolean) {
+        if (shouldPin){
             pinPoets(_selectedPoetsIds.value)
-        }?: run {
+        }else{
             unPinPoets(_selectedPoetsIds.value)
         }
     }
@@ -123,7 +152,7 @@ class PoetListViewModel @Inject constructor(
                         getPinnedPoets()
                     }
                     is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(it) }
+                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
                     }
                     else -> {}
                 }
@@ -139,7 +168,7 @@ class PoetListViewModel @Inject constructor(
                         getPinnedPoets()
                     }
                     is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(it) }
+                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
                     }
                     else -> {}
                 }
