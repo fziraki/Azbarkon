@@ -1,6 +1,6 @@
-package abkabk.azbarkon.core.base
+package abkabk.azbarkon.common.base
 
-import abkabk.azbarkon.core.extension.showLoadingDialog
+import abkabk.azbarkon.common.extension.showLoadingDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -17,7 +17,7 @@ abstract class BaseFragment(
     protected open var bottomNavigationViewVisibility = View.GONE
     private var loadingDialog: AlertDialog? = null
     protected open var defaultHandleBackStack = true
-
+    protected open var toolbarVisibility = View.VISIBLE
     fun showLoading(){
         loadingDialog?.dismiss()
         loadingDialog = this.showLoadingDialog()
@@ -25,6 +25,10 @@ abstract class BaseFragment(
 
     fun hideLoading(){
         loadingDialog?.dismiss()
+    }
+
+    fun initTitle(title: String, backVisibility: Int) {
+        myActivity.setToolbarTitle(title, backVisibility)
     }
 
     override fun onAttach(context: Context) {
@@ -38,6 +42,12 @@ abstract class BaseFragment(
             myActivity.showBottomNavigation()
         } else {
             myActivity.hideBottomNavigation()
+        }
+
+        if (toolbarVisibility == View.VISIBLE) {
+            myActivity.showToolbar()
+        } else {
+            myActivity.hideToolbar()
         }
     }
 

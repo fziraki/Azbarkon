@@ -1,4 +1,4 @@
-package abkabk.azbarkon.core
+package abkabk.azbarkon.common
 
 object Constants {
 
@@ -7,5 +7,7 @@ object Constants {
     const val POET_ID = "poetId"
     const val CAT_ID = "catId"
     const val POEM_ID = "poemId"
+    const val MY_SELECTION = "mySelection"
+    const val POET_KEY = "poet"
 
 }

@@ -1,10 +1,10 @@
 package abkabk.azbarkon.features.poet.poet_details
 
 import abkabk.azbarkon.R
-import abkabk.azbarkon.core.SpaceItemDecoration
-import abkabk.azbarkon.core.base.BaseFragment
-import abkabk.azbarkon.core.extension.autoCleared
-import abkabk.azbarkon.core.extension.viewBinding
+import abkabk.azbarkon.common.SpaceItemDecoration
+import abkabk.azbarkon.common.base.BaseFragment
+import abkabk.azbarkon.common.extension.autoCleared
+import abkabk.azbarkon.common.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoetDetailsBinding
 import abkabk.azbarkon.features.poet.domain.Children
 import android.view.View
@@ -23,6 +23,8 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
+
+    override var toolbarVisibility = View.GONE
 
     override var defaultHandleBackStack = false
 

@@ -1,4 +1,4 @@
-package abkabk.azbarkon.core.extension
+package abkabk.azbarkon.common.extension
 
 
 import android.view.View

@@ -1,10 +1,10 @@
 package abkabk.azbarkon.features.poem.poem_list
 
 import abkabk.azbarkon.R
-import abkabk.azbarkon.core.SpaceItemDecoration
-import abkabk.azbarkon.core.base.BaseFragment
-import abkabk.azbarkon.core.extension.autoCleared
-import abkabk.azbarkon.core.extension.viewBinding
+import abkabk.azbarkon.common.SpaceItemDecoration
+import abkabk.azbarkon.common.base.BaseFragment
+import abkabk.azbarkon.common.extension.autoCleared
+import abkabk.azbarkon.common.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoemListBinding
 import abkabk.azbarkon.features.poet.domain.Poem
 import android.view.View
@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.onEach
 class PoemListFragment: BaseFragment(R.layout.fragment_poem_list) {
 
     override var bottomNavigationViewVisibility = View.GONE
+
     private val viewBinding by viewBinding(FragmentPoemListBinding::bind)
     private val viewModel: PoemListViewModel by viewModels()
 
@@ -49,7 +50,9 @@ class PoemListFragment: BaseFragment(R.layout.fragment_poem_list) {
                     hideLoading()
                 }
 
-                viewBinding.title.text = it.ancestorName
+                it.ancestorName?.let {
+                    initTitle(it, View.VISIBLE)
+                }
 
                 it.poemList?.let { poems ->
                     poemsAdapter.setData(poems)

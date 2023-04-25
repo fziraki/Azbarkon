@@ -21,7 +21,7 @@
             app:destination="@id/poemList" />
         <argument
             android:name="poet"
-            app:argType="abkabk.azbarkon.features.poet.domain.Poet" />
+            app:argType="abkabk.azbarkon.features.poet.model.PoetUi" />
 
 
     </fragment>

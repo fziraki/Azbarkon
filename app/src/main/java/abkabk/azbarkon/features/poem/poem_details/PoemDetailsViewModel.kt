@@ -1,7 +1,7 @@
 package abkabk.azbarkon.features.poem.poem_details
 
-import abkabk.azbarkon.core.Constants.POEM_ID
-import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.common.Constants.POEM_ID
+import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poem.domain.use_case.GetPoemDetailsUseCase
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

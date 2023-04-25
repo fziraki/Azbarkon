@@ -1,6 +1,6 @@
 package abkabk.azbarkon.features.poem.domain.use_case
 
-import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poem.domain.PoemDetails
 import abkabk.azbarkon.features.poem.domain.repository.PoemRepository
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package abkabk.azbarkon.core.extension
+package abkabk.azbarkon.common.extension
 
 /*
  * Copyright (C) 2018 The Android Open Source Project

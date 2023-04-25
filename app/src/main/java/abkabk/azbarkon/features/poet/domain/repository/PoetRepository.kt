@@ -1,6 +1,6 @@
 package abkabk.azbarkon.features.poet.domain.repository
 
-import abkabk.azbarkon.core.Resource
+import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poet.domain.Poet
 import abkabk.azbarkon.features.poet.domain.PoetDetails
 import kotlinx.coroutines.flow.Flow

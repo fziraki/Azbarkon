@@ -1,4 +1,4 @@
-package abkabk.azbarkon.core.extension
+package abkabk.azbarkon.common.extension
 
 import abkabk.azbarkon.databinding.ProgressLoadingBinding
 import android.graphics.Color

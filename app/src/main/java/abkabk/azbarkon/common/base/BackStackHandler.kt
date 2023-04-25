@@ -1,4 +1,4 @@
-package abkabk.azbarkon.core.base
+package abkabk.azbarkon.common.base
 
 
 interface BackStackHandler {

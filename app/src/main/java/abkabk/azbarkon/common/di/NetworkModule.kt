@@ -1,6 +1,6 @@
-package abkabk.azbarkon.core.di
+package abkabk.azbarkon.common.di
 
-import abkabk.azbarkon.core.Constants.BASE_URL
+import abkabk.azbarkon.common.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
