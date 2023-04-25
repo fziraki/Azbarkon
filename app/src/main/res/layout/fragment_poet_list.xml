@@ -72,8 +72,7 @@
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchview"
         app:queryHint="نام شاعر..."
-        android:background="@drawable/rounded_rect_10dp"
-        android:backgroundTint="@color/brownAlpha"
+        android:background="@drawable/search_bg"
         android:elevation="6dp"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -84,6 +83,8 @@
         android:textDirection="rtl"
         app:searchHintIcon="@null"
         android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"
         />
 
 

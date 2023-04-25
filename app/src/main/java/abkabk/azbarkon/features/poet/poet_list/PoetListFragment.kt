@@ -9,6 +9,8 @@ import abkabk.azbarkon.common.extension.autoCleared
 import abkabk.azbarkon.common.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoetListBinding
 import abkabk.azbarkon.features.poet.model.PoetUi
+import android.annotation.SuppressLint
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -50,6 +52,7 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
         initSearchView()
         viewBinding.close.setOnClickListener {
             viewBinding.contextMenu.visibility = View.GONE
+            myTracker?.clearSelection()
         }
         viewBinding.togglePin.setOnClickListener {
             viewModel.onUiEvent(
@@ -94,6 +97,8 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
                     viewBinding.contextMenu.visibility = View.GONE
                     myTracker?.clearSelection()
                     poetsAdapter.setData(it.poetList)
+                    viewBinding.searchview.setQuery("",true)
+                    viewBinding.searchview.onActionViewCollapsed()
                     delay(300)
                     viewBinding.poetListRv.scrollToPosition(0)
                     viewBinding.searchview.visibility = View.VISIBLE
@@ -156,6 +161,7 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
         poetsAdapter.tracker = myTracker
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initSearchView() {
         viewBinding.searchview.setOnQueryTextListener(object : OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -164,7 +170,7 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
                         poetsAdapter.filter.filter(it)
                     }
                 }
-                return true
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -173,9 +179,22 @@ class PoetListFragment: BaseFragment(R.layout.fragment_poet_list) {
                         poetsAdapter.filter.filter(it)
                     }
                 }
-                return true
+                return false
             }
 
         })
+
+
+        /* note: don't use setOnClickListener because:
+        it doesn't trigger after setting isIconified = false
+        it only triggers for the first time */
+        viewBinding.searchview.setOnTouchListener { _, event ->
+            if(event.action == MotionEvent.ACTION_UP){
+                viewBinding.searchview.isIconified = false
+                true
+            }
+            false
+        }
+
     }
 }
