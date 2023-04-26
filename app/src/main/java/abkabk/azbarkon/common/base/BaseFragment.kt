@@ -18,6 +18,7 @@ abstract class BaseFragment(
     private var loadingDialog: AlertDialog? = null
     protected open var defaultHandleBackStack = true
     protected open var toolbarVisibility = View.VISIBLE
+
     fun showLoading(){
         loadingDialog?.dismiss()
         loadingDialog = this.showLoadingDialog()
@@ -27,8 +28,8 @@ abstract class BaseFragment(
         loadingDialog?.dismiss()
     }
 
-    fun initTitle(title: String, backVisibility: Int) {
-        myActivity.setToolbarTitle(title, backVisibility)
+    fun initTitle(title: String, backVisibility: Int, goHomeVisibility: Int) {
+        myActivity.setToolbarTitle(title, backVisibility, goHomeVisibility)
     }
 
     override fun onAttach(context: Context) {

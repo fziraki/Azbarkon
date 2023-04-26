@@ -1,21 +1,19 @@
-package abkabk.azbarkon.features.poem.data.remote
+package abkabk.azbarkon.features.poem.model
 
 import abkabk.azbarkon.features.poem.domain.PoemDetails
-import abkabk.azbarkon.features.poet.domain.*
-import com.google.gson.annotations.SerializedName
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
-data class PoemDetailsDto(
-    @SerializedName("id")
+@Parcelize
+data class PoemDetailsUi(
     val id: Int?,
-    @SerializedName("fullTitle")
     val fullTitle: String?,
-    @SerializedName("fullUrl")
     val fullUrl: String?,
-    @SerializedName("plainText")
     val plainText: String?,
-    @SerializedName("htmlText")
-    val htmlText: String?
-){
+    val htmlText: String?,
+    val shortTitle: String?
+): Parcelable {
+
     fun toPoemDetails(): PoemDetails {
         return PoemDetails(
             id = id,
@@ -23,7 +21,8 @@ data class PoemDetailsDto(
             fullUrl = fullUrl,
             plainText = plainText,
             htmlText = htmlText,
-            shortTitle = null
+            shortTitle = shortTitle
         )
     }
 }
+

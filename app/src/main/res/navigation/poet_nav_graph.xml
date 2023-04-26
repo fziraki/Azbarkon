@@ -38,13 +38,7 @@
             android:id="@+id/action_poemList_to_poemDetailsFragment"
             app:destination="@id/poemDetailsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/poemDetailsFragment"
-        android:name="abkabk.azbarkon.features.poem.poem_details.PoemDetailsFragment"
-        android:label="PoemDetailsFragment" >
-        <argument
-            android:name="poemId"
-            app:argType="integer" />
-    </fragment>
+
+
 
 </navigation>

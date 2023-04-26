@@ -10,7 +10,7 @@ class EditorFragment : BaseFragment(R.layout.fragment_editor) {
 
     override fun setupScreen() {
 
-        initTitle(getString(R.string.poetry_pic), View.GONE)
+        initTitle(getString(R.string.poetry_pic), View.GONE, View.GONE)
     }
 
     override fun setupObservers() {

@@ -7,5 +7,6 @@ data class PoetDetailsState(
     var isLoading: Boolean = false,
     var poet: PoetUi? = null,
     var catId: Int? = null,
+    var ancestorName: String? = null,
     val children: List<Children>? = null,
 )

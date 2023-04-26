@@ -1,6 +1,8 @@
 package abkabk.azbarkon.features.poem.poem_list
 
 import abkabk.azbarkon.R
+import abkabk.azbarkon.common.Constants.POEM_ID
+import abkabk.azbarkon.common.Constants.POEM_TITLE
 import abkabk.azbarkon.common.SpaceItemDecoration
 import abkabk.azbarkon.common.base.BaseFragment
 import abkabk.azbarkon.common.extension.autoCleared
@@ -29,9 +31,13 @@ class PoemListFragment: BaseFragment(R.layout.fragment_poem_list) {
 
     private var poemsAdapter by autoCleared<PoemsAdapter>()
     private val poemItemClickListener = { poem: Poem ->
+        val poemTitle = String.format("%s - %s", poem.title, poem.excerpt)
         findNavController()
             .navigate(R.id.action_poemList_to_poemDetailsFragment,
-                bundleOf("poemId" to poem.id)
+                bundleOf(
+                    POEM_ID to poem.id.toString(),
+                    POEM_TITLE to poemTitle
+                )
             )
     }
 
@@ -51,7 +57,7 @@ class PoemListFragment: BaseFragment(R.layout.fragment_poem_list) {
                 }
 
                 it.ancestorName?.let {
-                    initTitle(it, View.VISIBLE)
+                    initTitle(it, View.VISIBLE, View.GONE)
                 }
 
                 it.poemList?.let { poems ->
@@ -77,4 +83,6 @@ class PoemListFragment: BaseFragment(R.layout.fragment_poem_list) {
             layoutDirection = View.LAYOUT_DIRECTION_RTL
             addItemDecoration(SpaceItemDecoration(10))
         }
-    }}
+    }
+
+}

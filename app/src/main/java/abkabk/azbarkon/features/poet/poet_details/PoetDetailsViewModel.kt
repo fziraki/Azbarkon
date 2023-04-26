@@ -49,8 +49,14 @@ class PoetDetailsViewModel @Inject constructor(
                         _state.value = state.value.copy(isLoading = true)
                     }
                     is Resource.Success -> {
+                        val ancestors = result.data?.cat?.ancestors
+                        val builder = StringBuilder()
+                        ancestors?.forEach {
+                            builder.append(String.format("%s » ", it.title))
+                        }
                         val currentState = state.value.copy(isLoading = false,
                             catId = catId,
+                            ancestorName = builder.toString().plus(result.data?.cat?.title),
                             children = result.data?.cat?.children,
                         )
                         //save state before set it because of empty categories things go wrong
@@ -71,6 +77,7 @@ class PoetDetailsViewModel @Inject constructor(
         editor.contenttt.asStateFlow().onEach {
             _state.value = state.value.copy(
                 catId = it.catId,
+                ancestorName = it.ancestorName,
                 children = it.children,
             )
         }.launchIn(viewModelScope)

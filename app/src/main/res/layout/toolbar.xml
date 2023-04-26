@@ -12,25 +12,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/goHome"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:src="@drawable/ic_return_home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/color_efeddd" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"
+            />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="goHome, guide"
+            app:barrierDirection="start"
+            />
+
         <TextView
             android:id="@+id/title"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/barrier"
             app:layout_constraintStart_toEndOf="@+id/back"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingHorizontal="16dp"
             android:gravity="start|center_vertical"
             tools:text="شاعر"
             android:textColor="@color/color_efeddd"
             android:textSize="16sp"
+            android:singleLine="true"
+            android:ellipsize="end"
             />
 
         <ImageView
             android:id="@+id/back"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:paddingHorizontal="16dp"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_back"
             app:tint="@color/color_efeddd" />
 

@@ -22,6 +22,10 @@ class PoemDetailsFragment: BaseFragment(R.layout.fragment_poem_details) {
 
     override fun setupScreen() {
 
+        viewBinding.toggleBookmark.setOnClickListener {
+            viewModel.onUiEvent(PoemDetailsViewModel.UiEvent.ToggleBookmark)
+        }
+
     }
 
     override fun setupObservers() {
@@ -36,11 +40,18 @@ class PoemDetailsFragment: BaseFragment(R.layout.fragment_poem_details) {
                     hideLoading()
                 }
 
-                poemDetailsState.poemDetails?.fullTitle?.let {
-                    initTitle(it, View.VISIBLE)
+                poemDetailsState.poemTitle?.let {
+                    initTitle(it, View.VISIBLE, View.VISIBLE)
+                }
+
+                if (poemDetailsState.isLiked) {
+                    viewBinding.toggleBookmark.setImageResource(R.drawable.ic_like_filled)
+                } else {
+                    viewBinding.toggleBookmark.setImageResource(R.drawable.ic_like_border)
                 }
 
                 viewBinding.poem.apply {
+                    settings.setSupportZoom(true)
                     setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.color_c7b299))
                     poemDetailsState.poemDetails?.htmlText?.let {
                         val html = it
@@ -55,9 +66,15 @@ class PoemDetailsFragment: BaseFragment(R.layout.fragment_poem_details) {
 
         viewModel.uiEvent
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            .onEach { uiEvent ->
+                when(uiEvent){
+                    is PoemDetailsViewModel.UiEvent.ShowSnackbar -> {
+                        Toast.makeText(requireContext(), uiEvent.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {}
+                }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
     }
 
 
