@@ -1,0 +1,14 @@
+package abkabk.azbarkon.common.domain.use_case
+
+import abkabk.azbarkon.common.Resource
+import abkabk.azbarkon.common.domain.repository.LikedPoemRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+
+class UnLikePoemUseCase @Inject constructor(
+    private val likedPoemRepository: LikedPoemRepository
+) {
+    operator fun invoke(poemId: Int): Flow<Resource<Unit>> {
+        return likedPoemRepository.removeLikedPoems(poemId)
+    }
+}

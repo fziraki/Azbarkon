@@ -8,6 +8,6 @@ abstract class BaseActivity : AppCompatActivity(){
     abstract fun hideBottomNavigation()
     abstract fun showToolbar()
     abstract fun hideToolbar()
-    abstract fun setToolbarTitle(title: String, backVisibility: Int)
+    abstract fun setToolbarTitle(title: String?, backVisibility: Int, goHomeVisibility: Int)
 
 }

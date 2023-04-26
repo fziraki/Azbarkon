@@ -1,8 +1,10 @@
 package abkabk.azbarkon.features.poem.poem_details
 
-import abkabk.azbarkon.features.poem.domain.PoemDetails
+import abkabk.azbarkon.features.poem.model.PoemDetailsUi
 
 data class PoemDetailsState(
     var isLoading: Boolean = false,
-    var poemDetails: PoemDetails? = null
+    var poemDetails: PoemDetailsUi? = null,
+    var poemTitle: String? = "",
+    var isLiked: Boolean = false
 )

@@ -49,11 +49,18 @@ class MainActivity : BaseActivity() {
         viewBinding.toolbar.root.visibility = View.GONE
     }
 
-    override fun setToolbarTitle(title: String, backVisibility: Int) {
-        viewBinding.toolbar.title.text = title
+    override fun setToolbarTitle(title: String?, backVisibility: Int, goHomeVisibility: Int) {
+        title?.let {
+            viewBinding.toolbar.title.visibility = View.VISIBLE
+            viewBinding.toolbar.title.text = title
+        }
         viewBinding.toolbar.back.visibility = backVisibility
+        viewBinding.toolbar.goHome.visibility = goHomeVisibility
         viewBinding.toolbar.back.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+        viewBinding.toolbar.goHome.setOnClickListener {
+            navController.popBackStack(R.id.poetList,false)
         }
     }
 

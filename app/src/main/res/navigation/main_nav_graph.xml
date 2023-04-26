@@ -24,6 +24,31 @@
     <fragment
         android:id="@+id/likes"
         android:name="abkabk.azbarkon.features.likes.LikesFragment"
-        android:label="LikesFragment" />
+        android:label="LikesFragment" >
+        <action
+            android:id="@+id/action_likes_to_poemDetailsFragment"
+            app:destination="@id/poemDetailsFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/poemDetailsFragment"
+        android:name="abkabk.azbarkon.features.poem.poem_details.PoemDetailsFragment"
+        android:label="PoemDetailsFragment" >
+        <argument
+            android:name="poem"
+            app:argType="abkabk.azbarkon.features.poem.model.PoemDetailsUi"
+            app:nullable="true" />
+        <argument
+            android:name="poemId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="poemTitle"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
 
 </navigation>

@@ -7,6 +7,7 @@ import abkabk.azbarkon.common.extension.autoCleared
 import abkabk.azbarkon.common.extension.viewBinding
 import abkabk.azbarkon.databinding.FragmentPoetDetailsBinding
 import abkabk.azbarkon.features.poet.domain.Children
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -23,8 +24,6 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
-
-    override var toolbarVisibility = View.GONE
 
     override var defaultHandleBackStack = false
 
@@ -65,6 +64,10 @@ class PoetDetailsFragment: BaseFragment(R.layout.fragment_poet_details) {
                     showLoading()
                 }else{
                     hideLoading()
+                }
+
+                poetDetailsState.ancestorName?.let {
+                    initTitle(it, View.VISIBLE, View.VISIBLE)
                 }
 
                 poetDetailsState.poet?.let {
