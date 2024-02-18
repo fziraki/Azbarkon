@@ -1,179 +1,88 @@
 package abkabk.azbarkon.features.poet.poet_list
 
 import abkabk.azbarkon.R
-import abkabk.azbarkon.common.Resource
-import abkabk.azbarkon.common.UiText
-import abkabk.azbarkon.features.poet.domain.use_case.GetPinnedPoetListUseCase
+import abkabk.azbarkon.common.base.BaseState
+import abkabk.azbarkon.common.base.BaseViewModel
 import abkabk.azbarkon.features.poet.domain.use_case.GetPoetListUseCase
-import abkabk.azbarkon.features.poet.domain.use_case.PinPoetListUseCase
-import abkabk.azbarkon.features.poet.domain.use_case.UnPinPoetListUseCase
 import abkabk.azbarkon.features.poet.model.PoetUi
-import androidx.lifecycle.ViewModel
+import abkabk.azbarkon.utils.ErrorEntity
+import abkabk.azbarkon.utils.ErrorHandler
+import abkabk.azbarkon.utils.Resource
+import abkabk.azbarkon.utils.UiText
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.selection.Selection
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PoetListViewModel @Inject constructor(
     private val getPoetListUseCase: GetPoetListUseCase,
-    private val getPinnedPoetListUseCase: GetPinnedPoetListUseCase,
-    private val pinPoetListUseCase: PinPoetListUseCase,
-    private val unPinPoetListUseCase: UnPinPoetListUseCase
-): ViewModel() {
+    private val errorHandler: ErrorHandler
+): BaseViewModel<BaseState>(){
 
-    private val _state = MutableStateFlow(PoetListState())
-    val state = _state.asStateFlow()
-
-    private val _selectedPoetsIds = MutableStateFlow<List<Int>>(emptyList())
-
-    private val _poetsState = MutableStateFlow<List<PoetUi>>(emptyList())
-
-    private val _pinnedPoetsState = MutableStateFlow<List<Int>>(emptyList())
-
-    private val _togglePinText = MutableStateFlow<UiText.StringResource?>(null)
-    val togglePinText = _togglePinText.asStateFlow()
-
-    private val _uiEvent = MutableSharedFlow<UiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _poets = MutableStateFlow<List<PoetUi>>(emptyList())
+    val poets = _poets.asStateFlow()
 
     init {
-        getPinnedPoets()
         getPoets()
-        combinePoetsToPinnedToGetPoets()
     }
 
-    private fun setTogglePinText() {
-        _state.value.poetList.filter { poet ->
-            _selectedPoetsIds.value.any { it == poet.id }
-        }.find { !it.isPinned }?.let {
-            _togglePinText.value = UiText.StringResource(resId = R.string.pin)
-        }?: run {
-            _togglePinText.value = UiText.StringResource(resId = R.string.unpin)
+    private fun getPoets(){
+        viewModelScope.launch {
+            getPoetListUseCase().collect{ result->
+                when(result){
+                    is Resource.Error -> {
+
+
+                    }
+                    is Resource.Loading -> {
+
+
+                    }
+                    is Resource.Success -> {
+                        _poets.value = result.data?.map { it.toPoetUi() }?: emptyList()
+                    }
+                }
+            }
         }
     }
 
-    sealed class UiEvent {
-        data class ShowSnackbar(val message: String): UiEvent()
-
-        data class OnSelectionChanged(val selection: Selection<Long>) : UiEvent()
-
-        data class TogglePin(val shouldPin: Boolean) : UiEvent()
-
-    }
-
-    fun onUiEvent(event: UiEvent){
+    fun onUiEvent(event: BaseState) {
         when(event){
-            is UiEvent.ShowSnackbar -> {}
-            is UiEvent.OnSelectionChanged -> saveSelectedItemsIds(event.selection)
-            is UiEvent.TogglePin -> togglePin(event.shouldPin)
-        }
-    }
 
-    private fun combinePoetsToPinnedToGetPoets(){
-        viewModelScope.launch {
-            combine(
-                _poetsState,
-                _pinnedPoetsState
-            ){ poets, pins ->
-                poets.map { poet ->
-                    poet.isPinned = pins.any { it == poet.id }
-                    poet
-                }.sortedByDescending { it.isPinned }
-            }.collect { poets ->
-                _state.value = state.value.copy(poetList = poets)
+            is BaseState.OnError -> {
+
+                if (errorHandler.getError(event.throwable) == ErrorEntity.NoConnection){
+                    sendEventSync(event)
+                }else{
+                    translateError(event.throwable)
+                }
+            }
+            else -> {
+                sendEventSync(event)
             }
         }
     }
 
-    private fun getPoets() {
-        viewModelScope.launch {
-            getPoetListUseCase().onEach { result ->
-                when(result){
-                    is Resource.Loading -> {
-                        _state.value = state.value.copy(isLoading = true)
-                        _poetsState.value = result.data?.map { it.toPoetUi() }?: emptyList()
-                    }
-                    is Resource.Success -> {
-                        _state.value = state.value.copy(isLoading = false)
-                        _poetsState.value = result.data?.map { it.toPoetUi() }?: emptyList()
-                    }
-                    is Resource.Error -> {
-                        _state.value = state.value.copy(isLoading = false)
-                        _poetsState.value = result.data?.map { it.toPoetUi() }?: emptyList()
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
-                    }
-                }
-            }.launchIn(this)
+
+
+    private fun translateError(it: Throwable) {
+
+        val message = when(errorHandler.getError(it)){
+            ErrorEntity.BadRequest -> UiText.StringResource(resId = R.string.bad_request)
+            ErrorEntity.Forbidden -> UiText.StringResource(resId = R.string.forbidden)
+            ErrorEntity.HTTP_401 -> UiText.StringResource(resId = R.string.unauthorized)
+            ErrorEntity.NotFound -> UiText.StringResource(resId = R.string.not_found)
+            ErrorEntity.ServiceUnavailable -> UiText.StringResource(resId = R.string.service_unavailable)
+            ErrorEntity.Unknown -> UiText.StringResource(resId = R.string.unknown)
+            else -> {
+                UiText.DynamicString("")}
         }
-    }
-    private fun getPinnedPoets() {
-        viewModelScope.launch {
-            getPinnedPoetListUseCase().collect { result ->
-                when(result){
-                    is Resource.Loading -> {
-                        _state.value = state.value.copy(isLoading = true)
-                        _pinnedPoetsState.value = result.data?: emptyList()
-                    }
-                    is Resource.Success -> {
-                        _state.value = state.value.copy(isLoading = false)
-                        _pinnedPoetsState.value = result.data?: emptyList()
-                    }
-                    is Resource.Error -> {
-                        _state.value = state.value.copy(isLoading = false)
-                        _pinnedPoetsState.value = result.data?: emptyList()
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
-                    }
-                }
-            }
-        }
+
     }
 
-    private fun saveSelectedItemsIds(selection: Selection<Long>) {
-        _selectedPoetsIds.value = selection.map { it.toInt() }
-        setTogglePinText()
-    }
 
-    private fun togglePin(shouldPin: Boolean) {
-        if (shouldPin){
-            pinPoets(_selectedPoetsIds.value)
-        }else{
-            unPinPoets(_selectedPoetsIds.value)
-        }
-    }
-
-    private fun pinPoets(poetIds: List<Int>) {
-        viewModelScope.launch {
-            pinPoetListUseCase(poetIds).collect { result ->
-                when(result){
-                    is Resource.Success -> {
-                        getPinnedPoets()
-                    }
-                    is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
-                    }
-                    else -> {}
-                }
-            }
-        }
-    }
-
-    private fun unPinPoets(poetIds: List<Int>) {
-        viewModelScope.launch {
-            unPinPoetListUseCase(poetIds).collect { result ->
-                when(result){
-                    is Resource.Success -> {
-                        getPinnedPoets()
-                    }
-                    is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
-                    }
-                    else -> {}
-                }
-            }
-        }
-    }
 
 }

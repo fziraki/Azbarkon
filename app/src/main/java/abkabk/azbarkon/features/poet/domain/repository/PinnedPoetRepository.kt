@@ -1,6 +1,6 @@
 package abkabk.azbarkon.features.poet.domain.repository
 
-import abkabk.azbarkon.common.Resource
+import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface PinnedPoetRepository {

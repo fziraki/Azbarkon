@@ -4,4 +4,14 @@
     <string name="poetry_pic">شعرنمایه</string>
     <string name="pin">پین کردن</string>
     <string name="unpin">برداشتن پین</string>
+
+
+    <string name="bad_request">bad request</string>
+    <string name="forbidden">forbidden</string>
+    <string name="unauthorized">unauthorized</string>
+    <string name="no_connection">no connection</string>
+    <string name="not_found">not found</string>
+    <string name="service_unavailable">service unavailable</string>
+    <string name="unknown">unknown</string>
+
 </resources>

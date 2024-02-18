@@ -1,10 +1,10 @@
 package abkabk.azbarkon.features.poem.data.repository
 
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poem.data.remote.PoemApi
 import abkabk.azbarkon.features.poem.domain.PoemDetails
 import abkabk.azbarkon.features.poem.domain.repository.PoemRepository
 import abkabk.azbarkon.features.poet.domain.PoetDetails
+import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

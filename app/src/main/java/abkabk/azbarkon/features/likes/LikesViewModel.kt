@@ -1,7 +1,7 @@
 package abkabk.azbarkon.features.likes
 
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.common.domain.use_case.GetLikedPoemListUseCase
+import abkabk.azbarkon.utils.Resource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

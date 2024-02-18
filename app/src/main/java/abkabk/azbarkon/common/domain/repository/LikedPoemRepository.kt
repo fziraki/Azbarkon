@@ -1,7 +1,7 @@
 package abkabk.azbarkon.common.domain.repository
 
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poem.domain.PoemDetails
+import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface LikedPoemRepository {

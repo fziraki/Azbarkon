@@ -1,10 +1,10 @@
 package abkabk.azbarkon.features.poet.poet_details
 
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poet.domain.use_case.GetSubCategoriesUseCase
 import abkabk.azbarkon.features.poet.model.PoetUi
 import abkabk.azbarkon.features.poet.poet_details.memento.Editor
 import abkabk.azbarkon.features.poet.poet_details.memento.History
+import abkabk.azbarkon.utils.Resource
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

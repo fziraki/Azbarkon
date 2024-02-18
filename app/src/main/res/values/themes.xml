@@ -1,16 +1,3 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Azbarkon" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_efeddd</item>
-        <item name="colorPrimaryVariant">@color/color_f5f4ea</item>
-        <item name="colorOnPrimary">@color/color_8b7160</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_528b7e</item>
-        <item name="colorSecondaryVariant">@color/color_c7b299</item>
-        <item name="colorOnSecondary">@color/color_f5f4ea</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-    </style>
+<resources>
+    <style name="Theme.Azbarkon" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

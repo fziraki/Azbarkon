@@ -1,8 +1,8 @@
 package abkabk.azbarkon.features.poem.poem_list
 
-import abkabk.azbarkon.common.Constants
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poem.domain.use_case.GetPoemsUseCase
+import abkabk.azbarkon.utils.Constants
+import abkabk.azbarkon.utils.Resource
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

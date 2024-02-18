@@ -1,14 +1,14 @@
 package abkabk.azbarkon.features.poem.poem_details
 
-import abkabk.azbarkon.common.Constants.POEM
-import abkabk.azbarkon.common.Constants.POEM_ID
-import abkabk.azbarkon.common.Constants.POEM_TITLE
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.common.domain.use_case.GetLikedPoemListUseCase
 import abkabk.azbarkon.common.domain.use_case.LikePoemUseCase
 import abkabk.azbarkon.common.domain.use_case.UnLikePoemUseCase
 import abkabk.azbarkon.features.poem.domain.use_case.GetPoemDetailsUseCase
 import abkabk.azbarkon.features.poem.model.PoemDetailsUi
+import abkabk.azbarkon.utils.Constants.POEM
+import abkabk.azbarkon.utils.Constants.POEM_ID
+import abkabk.azbarkon.utils.Constants.POEM_TITLE
+import abkabk.azbarkon.utils.Resource
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

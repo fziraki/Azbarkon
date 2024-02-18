@@ -1,7 +1,7 @@
 package abkabk.azbarkon.common.domain.use_case
 
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.common.domain.repository.LikedPoemRepository
+import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -1,10 +1,7 @@
 package abkabk.azbarkon.features.poem.model
 
 import abkabk.azbarkon.features.poem.domain.PoemDetails
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class PoemDetailsUi(
     val id: Int?,
     val fullTitle: String?,
@@ -12,7 +9,7 @@ data class PoemDetailsUi(
     val plainText: String?,
     val htmlText: String?,
     val shortTitle: String?
-): Parcelable {
+){
 
     fun toPoemDetails(): PoemDetails {
         return PoemDetails(

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="abkabk.azbarkon.SplashFragment"
+        android:name="abkabk.azbarkon.features.main.SplashFragment"
         android:label="SplashFragment">
     <action
         android:id="@+id/action_splashFragment_to_poetNavGraph"

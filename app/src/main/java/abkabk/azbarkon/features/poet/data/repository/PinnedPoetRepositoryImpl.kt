@@ -1,9 +1,9 @@
 package abkabk.azbarkon.features.poet.data.repository
 
-import abkabk.azbarkon.common.Resource
 import abkabk.azbarkon.features.poet.data.local.PinDao
 import abkabk.azbarkon.features.poet.data.local.PinEntity
 import abkabk.azbarkon.features.poet.domain.repository.PinnedPoetRepository
+import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
