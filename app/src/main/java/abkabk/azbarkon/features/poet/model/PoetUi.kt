@@ -8,10 +8,11 @@ data class PoetUi(
     val name: String?,
     val description: String?,
     val rootCatId: Int?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    var isPinned: Boolean = false,
+    var isSelected: Boolean = false
 ){
     val loadableImageUrl: String by lazy {
         Constants.BASE_URL.plus(imageUrl?.removePrefix("/"))
     }
-    var isPinned = false
 }

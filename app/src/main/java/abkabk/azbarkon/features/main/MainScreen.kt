@@ -34,9 +34,21 @@ fun MainScreen(
 
     val items = persistentListOf(
         BottomNavItem(
+            title = "likes",
+            route = Destinations.PoetListScreen.route,
+            icon = R.drawable.ic_like_filled,
+            badgeCount = 0
+        ),
+        BottomNavItem(
             title = "poets",
             route = Destinations.PoetListScreen.route,
             icon = R.drawable.ic_home,
+            badgeCount = 0
+        ),
+        BottomNavItem(
+            title = "editor",
+            route = Destinations.PoetListScreen.route,
+            icon = R.drawable.ic_photo,
             badgeCount = 0
         ),
 
@@ -74,13 +86,7 @@ fun MainScreen(
             AzbarkonNavHost(
                 navController = navController,
                 startDestination = Destinations.PoetListScreen.route,
-                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
-                title = {
-//                    screenTitle = it
-                },
-                onState = {
-//                    state = it
-                }
+                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding())
             )
         }
     }

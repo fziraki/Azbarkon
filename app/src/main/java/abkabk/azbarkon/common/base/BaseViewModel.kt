@@ -30,8 +30,4 @@ fun <E : Event> OnEvent(event: Flow<E>, onEvent: (E) -> Unit) {
     }
 }
 
-sealed interface BaseState : Event {
-        data object OnLoading : BaseState
-        data class OnError(val throwable: Throwable) : BaseState
-        data object OnSuccess : BaseState
-}
+

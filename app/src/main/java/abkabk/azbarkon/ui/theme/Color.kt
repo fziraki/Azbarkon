@@ -49,8 +49,13 @@ enum class DefaultColorsVariant : ColorVariant {
     },
 
     UnSelectedNav {
-        override val light: Color = brown_603913
+        override val light: Color = brown_8b7160
         override val dark: Color = brown_8b7160
+    },
+
+    SelectedPoet {
+        override val light: Color = beige_2alpha
+        override val dark: Color = beige_2alpha
     }
 
 }
@@ -63,6 +68,7 @@ data class Colors(
     val pinTint: Color,
     val selectedNav: Color,
     val unSelectedNav: Color,
+    val selectedPoet: Color,
     val isLight: Boolean
 )
 
@@ -74,6 +80,7 @@ object DefaultColors {
         pinTint = DefaultColorsVariant.PinTint.light,
         selectedNav = DefaultColorsVariant.SelectedNav.light,
         unSelectedNav = DefaultColorsVariant.UnSelectedNav.light,
+        selectedPoet = DefaultColorsVariant.SelectedPoet.light,
         isLight = true
     )
 
@@ -84,6 +91,7 @@ object DefaultColors {
         pinTint = DefaultColorsVariant.PinTint.dark,
         selectedNav = DefaultColorsVariant.SelectedNav.dark,
         unSelectedNav = DefaultColorsVariant.UnSelectedNav.dark,
+        selectedPoet = DefaultColorsVariant.SelectedPoet.dark,
         isLight = false
     )
 }
