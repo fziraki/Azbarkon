@@ -19,6 +19,7 @@ import androidx.lifecycle.flowWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -99,4 +100,13 @@ fun <T> rememberFlowWithLifecycle(
         lifecycle = lifecycle,
         minActiveState = minActiveState
     )
+}
+
+
+fun <A> String.navFromJson(type: Class<A>): A {
+    return Gson().fromJson(this, type)
+}
+
+fun <A> A.navToJson(): String? {
+    return Gson().toJson(this)
 }

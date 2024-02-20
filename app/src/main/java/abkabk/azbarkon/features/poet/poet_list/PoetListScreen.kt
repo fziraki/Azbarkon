@@ -11,6 +11,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -42,10 +43,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PoetListScreen(
+    onNavigateToPoetDetails: (PoetUi) -> Unit,
     viewModel: PoetListViewModel = hiltViewModel()
 ) {
 
-    val poets = viewModel.poets.collectAsLifecycleAwareState()
+    val poets = viewModel.poetsToShow.collectAsLifecycleAwareState()
     val selectedPoets = poets.value.filter { it.isSelected }
     val lazyStaggeredGridState = rememberLazyStaggeredGridState()
 
@@ -97,6 +99,8 @@ fun PoetListScreen(
                             onClick = {
                                 if (isSelectMode) {
                                     viewModel.onUiEvent(PoetListViewModel.Events.OnSelected(index))
+                                }else{
+                                    onNavigateToPoetDetails(poets.value[index])
                                 }
                             }
                         ),
@@ -128,7 +132,12 @@ fun PinHeader(
 
         Text(
             modifier = Modifier
-                .clickable { onTogglePin() }
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) {
+                    onTogglePin()
+                }
                 .wrapContentSize(),
             text = if (selectedPoets.any { !it.isPinned }) {
                 stringResource(R.string.pin)

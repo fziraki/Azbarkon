@@ -3,6 +3,7 @@ package abkabk.azbarkon.features.poet.poet_list
 import abkabk.azbarkon.R
 import abkabk.azbarkon.features.poet.model.PoetUi
 import abkabk.azbarkon.ui.theme.AzbarkonTheme
+import abkabk.azbarkon.utils.Constants
 import abkabk.azbarkon.utils.LoadImage
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -57,7 +58,7 @@ fun PoetItem(
 
             LoadImage(
                 modifier = Modifier.size(80.dp),
-                url = poet.loadableImageUrl,
+                url = poet.imageUrl?:"",
                 errorImage = ""
             )
 

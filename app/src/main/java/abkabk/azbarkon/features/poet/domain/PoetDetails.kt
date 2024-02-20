@@ -1,6 +1,7 @@
 package abkabk.azbarkon.features.poet.domain
 
 import abkabk.azbarkon.features.poet.model.PoetUi
+import abkabk.azbarkon.utils.Constants
 
 data class PoetDetails(
     val cat: Cat,
@@ -20,7 +21,7 @@ data class Poet(
             name = name,
             description = description,
             rootCatId = rootCatId,
-            imageUrl = imageUrl
+            imageUrl = Constants.BASE_URL.plus(imageUrl?.removePrefix("/"))
         )
     }
 }

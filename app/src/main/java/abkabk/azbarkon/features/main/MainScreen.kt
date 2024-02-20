@@ -15,27 +15,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun MainScreen(
-    mainViewModel: MainViewModel = hiltViewModel()
-) {
-
-    val context = LocalContext.current
-    val mainScope = rememberCoroutineScope()
-//    val uiState by mainViewModel.uiState.collectAsLifecycleAwareState()
+fun MainScreen() {
 
     val items = persistentListOf(
         BottomNavItem(
             title = "likes",
-            route = Destinations.PoetListScreen.route,
+            route = Destinations.LikedPoemsScreen.route,
             icon = R.drawable.ic_like_filled,
             badgeCount = 0
         ),
@@ -47,7 +38,7 @@ fun MainScreen(
         ),
         BottomNavItem(
             title = "editor",
-            route = Destinations.PoetListScreen.route,
+            route = Destinations.EditorScreen.route,
             icon = R.drawable.ic_photo,
             badgeCount = 0
         ),

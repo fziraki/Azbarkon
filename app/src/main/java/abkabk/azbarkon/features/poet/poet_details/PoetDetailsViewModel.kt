@@ -5,12 +5,18 @@ import abkabk.azbarkon.features.poet.model.PoetUi
 import abkabk.azbarkon.features.poet.poet_details.memento.Editor
 import abkabk.azbarkon.features.poet.poet_details.memento.History
 import abkabk.azbarkon.utils.Resource
+import abkabk.azbarkon.utils.navFromJson
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,10 +39,15 @@ class PoetDetailsViewModel @Inject constructor(
         data class Navigate(val action: Int, val bundle: Bundle) : UiEvent()
     }
     init {
-        savedStateHandle.get<PoetUi>("poet")?.let {
-            it.rootCatId?.let { rootCatId ->
-                _state.value = state.value.copy(poet = it, catId = rootCatId)
-                getCategories(rootCatId)
+        savedStateHandle.get<String>("poet")?.let {
+            it.navFromJson(PoetUi::class.java).let { poet ->
+                poet.rootCatId?.let { rootCatId ->
+                    _state.value = state.value.copy(
+                        poet = poet,
+                        catId = rootCatId
+                    )
+                    getCategories(rootCatId)
+                }
             }
         }
     }
@@ -72,7 +83,7 @@ class PoetDetailsViewModel @Inject constructor(
         }
     }
 
-    fun restore() {
+    private fun restore() {
         editor.restoreState(history.pop())
         editor.contenttt.asStateFlow().onEach {
             _state.value = state.value.copy(
@@ -94,6 +105,7 @@ class PoetDetailsViewModel @Inject constructor(
         editor.content = currentState
         history.push(editor.createState())
     }
+
 
 
 }
