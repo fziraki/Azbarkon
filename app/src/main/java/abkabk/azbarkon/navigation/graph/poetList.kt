@@ -16,6 +16,9 @@ fun NavGraphBuilder.poetList(
         route = Destinations.PoetListScreen.route
     ) {
         PoetListScreen(
+            onBackPressed = {
+                navController.navigateUp()
+            },
             onNavigateToPoetDetails = { poet ->
                 navController.navigate(
                     route = "${Destinations.PoetDetailsScreen().route}?poet={poet}",

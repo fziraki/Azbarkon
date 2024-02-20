@@ -1,5 +1,6 @@
 package abkabk.azbarkon.navigation
 
+import abkabk.azbarkon.navigation.graph.poemList
 import abkabk.azbarkon.navigation.graph.poetDetails
 import abkabk.azbarkon.navigation.graph.poetList
 import androidx.compose.animation.EnterTransition
@@ -27,6 +28,7 @@ fun AzbarkonNavHost(
 
         poetList(navController)
         poetDetails(navController)
+        poemList(navController)
 
     }
 }

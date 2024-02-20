@@ -4,7 +4,7 @@ import abkabk.azbarkon.R
 import abkabk.azbarkon.ui.theme.AzbarkonTheme
 import abkabk.azbarkon.utils.LoadImage
 import abkabk.azbarkon.utils.collectAsLifecycleAwareState
-import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -51,10 +51,19 @@ fun PoetDetailsScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Toolbar(title = uiState.value.ancestorName?:"", onBackPressed = onBackPressed)
+                Toolbar(
+                    title = uiState.value.ancestorName ?: "",
+                    onBackPressed = {
+                        if (uiState.value.poet?.rootCatId == uiState.value.catId) {
+                            onBackPressed()
+                        } else {
+                            viewModel.restore()
+                        }
+                    }
+                )
                 LoadImage(
                     modifier = Modifier.size(80.dp),
-                    url = uiState.value.poet?.imageUrl?:"",
+                    url = uiState.value.poet?.imageUrl ?: "",
                     errorImage = ""
                 )
                 Text(
@@ -73,20 +82,25 @@ fun PoetDetailsScreen(
 
         val children = uiState.value.children
         children?.let {
-            if (it.isEmpty()){
+            if (it.isEmpty()) {
+                viewModel.restore()
                 onNavigateToPoemList(uiState.value.catId)
-            }else{
+            } else {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = paddingValues.calculateTopPadding().plus(24.dp)),
+                        .padding(
+                            top = paddingValues
+                                .calculateTopPadding()
+                                .plus(24.dp)
+                        ),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     items(
                         count = it.size,
                         key = { index -> it[index].id }
-                    ){index ->
+                    ) { index ->
                         CategoryItem(
                             modifier = Modifier
                                 .combinedClickable(
@@ -94,23 +108,24 @@ fun PoetDetailsScreen(
 
                                     },
                                     onClick = {
-                                        Log.d("tagg","onClick ${it[index].id}")
                                         viewModel.getCategories(it[index].id)
                                     }
-                                )
-                            ,
+                                ),
                             categoryName = children[index].title
                         )
                     }
                 }
-
             }
         }
-
-
-
     }
 
+    BackHandler {
+        if (uiState.value.poet?.rootCatId == uiState.value.catId) {
+            onBackPressed()
+        } else {
+            viewModel.restore()
+        }
+    }
 }
 
 @Composable

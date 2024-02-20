@@ -83,7 +83,7 @@ class PoetDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun restore() {
+    fun restore() {
         editor.restoreState(history.pop())
         editor.contenttt.asStateFlow().onEach {
             _state.value = state.value.copy(
@@ -92,13 +92,6 @@ class PoetDetailsViewModel @Inject constructor(
                 children = it.children,
             )
         }.launchIn(viewModelScope)
-    }
-
-    fun shouldNavigate(action: Int, bundle: Bundle) {
-        viewModelScope.launch {
-            restore()
-            _eventFlow.emit(UiEvent.Navigate(action, bundle))
-        }
     }
 
     private fun saveState(currentState: PoetDetailsState) {

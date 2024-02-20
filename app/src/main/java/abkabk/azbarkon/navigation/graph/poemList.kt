@@ -1,25 +1,28 @@
 package abkabk.azbarkon.navigation.graph
 
-import abkabk.azbarkon.features.poet.poet_details.PoetDetailsScreen
+import abkabk.azbarkon.features.poem.poem_list.PoemListScreen
 import abkabk.azbarkon.navigation.Destinations
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
-fun NavGraphBuilder.poetDetails(
+fun NavGraphBuilder.poemList(
     navController: NavController,
 ) {
     composable(
-        route = Destinations.PoetDetailsScreen().route
+        route = "${Destinations.PoemListScreen().route}/{catId}",
+        arguments = listOf(
+            navArgument("catId"){ type = NavType.IntType }
+        )
     ) {
-        PoetDetailsScreen(
+        PoemListScreen(
             onBackPressed = {
                 navController.navigateUp()
             },
-            onNavigateToPoemList = { catId ->
-                navController.navigate(
-                    route = "${Destinations.PoemListScreen().route}/${catId}",
-                )
+            onNavigateToPoemDetails = {
+
             }
         )
     }

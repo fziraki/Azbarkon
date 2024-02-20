@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PoetListScreen(
+    onBackPressed: () -> Unit,
     onNavigateToPoetDetails: (PoetUi) -> Unit,
     viewModel: PoetListViewModel = hiltViewModel()
 ) {
