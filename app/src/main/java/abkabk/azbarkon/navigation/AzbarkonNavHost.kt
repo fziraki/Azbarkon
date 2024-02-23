@@ -1,5 +1,7 @@
 package abkabk.azbarkon.navigation
 
+import abkabk.azbarkon.navigation.graph.likedPoemList
+import abkabk.azbarkon.navigation.graph.poemDetails
 import abkabk.azbarkon.navigation.graph.poemList
 import abkabk.azbarkon.navigation.graph.poetDetails
 import abkabk.azbarkon.navigation.graph.poetList
@@ -29,6 +31,7 @@ fun AzbarkonNavHost(
         poetList(navController)
         poetDetails(navController)
         poemList(navController)
-
+        poemDetails(navController)
+        likedPoemList(navController)
     }
 }

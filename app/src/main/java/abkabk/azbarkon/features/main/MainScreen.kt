@@ -14,7 +14,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -46,16 +47,19 @@ fun MainScreen() {
     )
 
     val navController = rememberNavController()
-    val backStackEntry = navController.currentBackStackEntryAsState()
-    val currentScreenRoute = backStackEntry.value?.destination?.route
+    var showBottomBar by rememberSaveable { mutableStateOf(true) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    val bottomBarVisibility by remember { mutableStateOf(true)}
-
+    showBottomBar = when (navBackStackEntry?.destination?.route) {
+        Destinations.PoetListScreen.route -> true
+        Destinations.LikedPoemsScreen.route -> true
+        else -> false
+    }
 
     Scaffold(
         bottomBar = {
             AnimatedVisibility(
-                visible = bottomBarVisibility,
+                visible = showBottomBar,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
@@ -63,7 +67,7 @@ fun MainScreen() {
                 BottomNavigationBar(
                     bottomNavColor = AzbarkonTheme.colors.background,
                     items = items,
-                    currentScreenRoute = currentScreenRoute
+                    currentScreenRoute = navBackStackEntry?.destination?.route
                 ){
                     navController.navigate(it.route)
                 }

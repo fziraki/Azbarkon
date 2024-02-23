@@ -5,7 +5,10 @@ import abkabk.azbarkon.utils.Resource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,21 +25,17 @@ class LikesViewModel @Inject constructor(
 
     sealed class UiEvent {
         data class ShowSnackbar(val message: String): UiEvent()
-        object OnSetupScreen: UiEvent()
-//        object ToggleBookmark : UiEvent()
     }
 
     fun onUiEvent(event: UiEvent){
         when(event){
             is UiEvent.ShowSnackbar -> {}
-            UiEvent.OnSetupScreen -> getLikedPoems()
-//            UiEvent.ToggleBookmark -> toggleLike(state.value.isLiked, state.value.poemDetails?.id!!)
         }
     }
 
-    private fun getLikedPoems() {
+    fun getLikedPoems() {
         viewModelScope.launch {
-            getLikedPoemListUseCase().onEach { result ->
+            getLikedPoemListUseCase().collect{ result ->
                 when(result){
                     is Resource.Loading -> {
                         _state.value = state.value.copy(isLoading = true)
@@ -52,7 +51,7 @@ class LikesViewModel @Inject constructor(
                         result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
                     }
                 }
-            }.launchIn(this)
+            }
         }
     }
 

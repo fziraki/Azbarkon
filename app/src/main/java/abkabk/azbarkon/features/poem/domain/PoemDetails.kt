@@ -4,7 +4,7 @@ import abkabk.azbarkon.common.data.local.LikeEntity
 import abkabk.azbarkon.features.poem.model.PoemDetailsUi
 
 data class PoemDetails(
-    val id: Int?,
+    val id: Int,
     val fullTitle: String?,
     val fullUrl: String?,
     val plainText: String?,

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class LikeEntity(
-    @PrimaryKey val id: Int?,
+    @PrimaryKey val id: Int,
     val fullTitle: String?,
     val fullUrl: String?,
     val plainText: String?,

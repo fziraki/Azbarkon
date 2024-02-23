@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PoemDetailsDto(
     @SerializedName("id")
-    val id: Int?,
+    val id: Int,
     @SerializedName("fullTitle")
     val fullTitle: String?,
     @SerializedName("fullUrl")

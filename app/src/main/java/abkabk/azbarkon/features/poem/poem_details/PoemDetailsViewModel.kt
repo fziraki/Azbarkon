@@ -6,14 +6,18 @@ import abkabk.azbarkon.common.domain.use_case.UnLikePoemUseCase
 import abkabk.azbarkon.features.poem.domain.use_case.GetPoemDetailsUseCase
 import abkabk.azbarkon.features.poem.model.PoemDetailsUi
 import abkabk.azbarkon.utils.Constants.POEM
-import abkabk.azbarkon.utils.Constants.POEM_ID
-import abkabk.azbarkon.utils.Constants.POEM_TITLE
 import abkabk.azbarkon.utils.Resource
+import abkabk.azbarkon.utils.navFromJson
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,31 +33,30 @@ class PoemDetailsViewModel @Inject constructor(
     private val _state = MutableStateFlow(PoemDetailsState())
     val state = _state.asStateFlow()
 
-    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    private val _uiEvent = MutableSharedFlow<Events>()
     val uiEvent = _uiEvent.asSharedFlow()
 
     private val _likedPoemsState = MutableStateFlow<List<PoemDetailsUi>>(emptyList())
 
-    sealed class UiEvent {
-        data class ShowSnackbar(val message: String): UiEvent()
-        object ToggleBookmark : UiEvent()
+    sealed class Events {
+        data class ShowSnackbar(val message: String): Events()
+        data object ToggleLike : Events()
     }
 
-    fun onUiEvent(event: UiEvent){
+    fun onUiEvent(event: Events){
         when(event){
-            is UiEvent.ShowSnackbar -> {}
-            UiEvent.ToggleBookmark -> {
-                toggleLike(
-                    state.value.isLiked,
-                    state.value.poemDetails!!
-                )
+            is Events.ShowSnackbar -> {}
+            Events.ToggleLike -> {
+                state.value.poemDetails?.let {
+                    toggleLike(state.value.isLiked, it)
+                }
             }
         }
     }
 
     private fun toggleLike(isLiked: Boolean, poem: PoemDetailsUi) {
         if (isLiked){
-            unLikePoem(poem.id!!)
+            unLikePoem(poem.id)
         }else{
             likePoem(poem)
         }
@@ -67,7 +70,7 @@ class PoemDetailsViewModel @Inject constructor(
                         getLikedPoems()
                     }
                     is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
+                        result.message?.let { _uiEvent.emit(Events.ShowSnackbar(it)) }
                     }
                     else -> {}
                 }
@@ -83,7 +86,7 @@ class PoemDetailsViewModel @Inject constructor(
                         getLikedPoems()
                     }
                     is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
+                        result.message?.let { _uiEvent.emit(Events.ShowSnackbar(it)) }
                     }
                     else -> {}
                 }
@@ -92,32 +95,16 @@ class PoemDetailsViewModel @Inject constructor(
     }
 
     init {
-        savedStateHandle.get<PoemDetailsUi>(POEM)?.let {
+        savedStateHandle.get<String>(POEM)?.let {
             getLikedPoems()
-            viewModelScope.launch {
-                _likedPoemsState.collect { likedPoems ->
-                    val isLiked = likedPoems.any { poem -> poem.id == it.id }
-                    _state.value = state.value.copy(
-                        isLoading = false,
-                        poemDetails = it,
-                        poemTitle = it.shortTitle,
-                        isLiked = isLiked
-                    )
-                }
-            }
-        }?: run {
-            savedStateHandle.get<String>(POEM_TITLE)?.let {
-                _state.value = state.value.copy(poemTitle = it)
-            }
-            getLikedPoems()
-            savedStateHandle.get<String>(POEM_ID)?.let { poemId ->
+            it.navFromJson(PoemDetailsUi::class.java).let { poem ->
                 viewModelScope.launch {
                     _likedPoemsState.collect { likedPoems ->
-                        val isLiked = likedPoems.any { it.id == poemId.toInt() }
+                        val isLiked = likedPoems.any { it.id == poem.id }
                         _state.value = state.value.copy(isLiked = isLiked)
                     }
                 }
-                getPoemDetails(poemId.toInt())
+                getPoemDetails(poem.id)
             }
         }
     }
@@ -130,7 +117,7 @@ class PoemDetailsViewModel @Inject constructor(
                         _likedPoemsState.value = result.data?.map { it.toPoemDetailsUi() }?: emptyList()
                     }
                     is Resource.Error -> {
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
+                        result.message?.let { _uiEvent.emit(Events.ShowSnackbar(it)) }
                     }
                     else -> {}
                 }
@@ -146,16 +133,15 @@ class PoemDetailsViewModel @Inject constructor(
                         _state.value = state.value.copy(isLoading = true)
                     }
                     is Resource.Success -> {
-                        val poemDetails = result.data?.apply {
-                            this.shortTitle = state.value.poemTitle
-                        }
-                        _state.value = state.value.copy(isLoading = false,
-                            poemDetails = poemDetails?.toPoemDetailsUi()
+                        _state.value = state.value.copy(
+                            isLoading = false,
+                            poemDetails = result.data?.toPoemDetailsUi(),
+                            poemTitle = result.data?.fullTitle
                         )
                     }
                     is Resource.Error -> {
                         _state.value = state.value.copy(isLoading = false)
-                        result.message?.let { _uiEvent.emit(UiEvent.ShowSnackbar(it)) }
+                        result.message?.let { _uiEvent.emit(Events.ShowSnackbar(it)) }
                     }
                 }
             }.launchIn(this)

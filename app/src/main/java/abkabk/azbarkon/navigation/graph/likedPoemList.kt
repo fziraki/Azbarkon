@@ -1,26 +1,21 @@
 package abkabk.azbarkon.navigation.graph
 
-import abkabk.azbarkon.features.poem.poem_list.PoemListScreen
+import abkabk.azbarkon.features.likes.LikedPoemsScreen
 import abkabk.azbarkon.navigation.Destinations
 import abkabk.azbarkon.navigation.navigate
 import abkabk.azbarkon.utils.navToJson
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 
-fun NavGraphBuilder.poemList(
+fun NavGraphBuilder.likedPoemList(
     navController: NavController,
 ) {
     composable(
-        route = "${Destinations.PoemListScreen().route}/{catId}",
-        arguments = listOf(
-            navArgument("catId"){ type = NavType.IntType }
-        )
+        route = Destinations.LikedPoemsScreen.route
     ) {
-        PoemListScreen(
+        LikedPoemsScreen(
             onBackPressed = {
                 navController.navigateUp()
             },

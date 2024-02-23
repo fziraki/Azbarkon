@@ -3,7 +3,7 @@ package abkabk.azbarkon.features.poem.model
 import abkabk.azbarkon.features.poem.domain.PoemDetails
 
 data class PoemDetailsUi(
-    val id: Int?,
+    val id: Int,
     val fullTitle: String?,
     val fullUrl: String?,
     val plainText: String?,
