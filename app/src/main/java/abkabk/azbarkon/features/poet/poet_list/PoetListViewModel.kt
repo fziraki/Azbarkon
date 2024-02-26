@@ -17,6 +17,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,22 +40,33 @@ class PoetListViewModel @Inject constructor(
     private val _pinnedPoets = MutableStateFlow<List<Int>>(emptyList())
     val pinnedPoets = _pinnedPoets.asStateFlow()
 
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
     init {
         getPinnedPoets()
         getPoets()
         combinedPinsAndPoets()
     }
 
+    fun onSearchTextChange(text: String) {
+        _searchText.value = text
+    }
+
     private fun combinedPinsAndPoets() {
         viewModelScope.launch {
             combine(
                 _poets,
-                _pinnedPoets
+                _pinnedPoets,
             ) { poets, pinnedIds ->
                 poets.map { poet ->
                     poet.isPinned = pinnedIds.any { it == poet.id }
                     poet
                 }.sortedByDescending { it.isPinned }
+            }.combine(_searchText){ poets, query ->
+                poets.filter { poet ->
+                    poet.name?.contains(query) == true
+                }
             }.collect {
                 _poetsToShow.value = it
             }

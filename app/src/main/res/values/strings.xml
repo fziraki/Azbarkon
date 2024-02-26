@@ -4,6 +4,7 @@
     <string name="poetry_pic">شعرنمایه</string>
     <string name="pin">پین کردن</string>
     <string name="unpin">برداشتن پین</string>
+    <string name="poet_name">نام شاعر…</string>
 
 
     <string name="bad_request">bad request</string>

@@ -30,7 +30,7 @@ enum class DefaultColorsVariant : ColorVariant {
 
     OnSurface {
         override val light: Color = black
-        override val dark: Color = white
+        override val dark: Color = brown_603913
     },
 
     PoetBg {
@@ -50,7 +50,7 @@ enum class DefaultColorsVariant : ColorVariant {
 
     UnSelectedNav {
         override val light: Color = brown_8b7160
-        override val dark: Color = brown_8b7160
+        override val dark: Color = beige_c7b299
     },
 
     SelectedPoet {

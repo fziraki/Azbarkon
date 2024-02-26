@@ -13,6 +13,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,7 +33,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -40,7 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun PoetListScreen(
     onBackPressed: () -> Unit,
@@ -53,6 +56,8 @@ fun PoetListScreen(
     val lazyStaggeredGridState = rememberLazyStaggeredGridState()
 
     var isSelectMode by remember { mutableStateOf(false) }
+    val searchText by viewModel.searchText.collectAsLifecycleAwareState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
 
 
@@ -76,42 +81,59 @@ fun PoetListScreen(
 
             }
         }
+
     ) {
-        LazyVerticalStaggeredGrid(
-            modifier = Modifier
-                .background(AzbarkonTheme.colors.background)
-                .fillMaxSize()
-                .padding(top = it.calculateTopPadding()),
-            state = lazyStaggeredGridState,
-            columns = StaggeredGridCells.Adaptive(92.dp),
-            contentPadding = PaddingValues(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-            verticalItemSpacing = 8.dp
-        ) {
-            items(
-                count = poets.value.size,
-                key = { index -> poets.value[index].id ?: index }
-            ) { index ->
-                PoetItem(
-                    modifier = Modifier
-                        .combinedClickable(
-                            onLongClick = {
-                                isSelectMode = true
-                                viewModel.onUiEvent(PoetListViewModel.Events.OnSelected(index))
-                            },
-                            onClick = {
-                                if (isSelectMode) {
+
+        Box(contentAlignment = Alignment.BottomCenter) {
+            LazyVerticalStaggeredGrid(
+                modifier = Modifier
+                    .background(AzbarkonTheme.colors.background)
+                    .fillMaxSize()
+                    .padding(bottom = it.calculateBottomPadding()),
+                state = lazyStaggeredGridState,
+                columns = StaggeredGridCells.Adaptive(92.dp),
+                contentPadding = PaddingValues(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                verticalItemSpacing = 8.dp
+            ) {
+                items(
+                    count = poets.value.size,
+                    key = { index -> poets.value[index].id ?: index }
+                ) { index ->
+                    PoetItem(
+                        modifier = Modifier
+                            .combinedClickable(
+                                onLongClick = {
+                                    isSelectMode = true
                                     viewModel.onUiEvent(PoetListViewModel.Events.OnSelected(index))
-                                }else{
-                                    onNavigateToPoetDetails(poets.value[index])
+                                },
+                                onClick = {
+                                    if (isSelectMode) {
+                                        viewModel.onUiEvent(PoetListViewModel.Events.OnSelected(index))
+                                    }else{
+                                        onNavigateToPoetDetails(poets.value[index])
+                                    }
                                 }
-                            }
-                        ),
-                    poet = poets.value[index]
-                )
+                            ),
+                        poet = poets.value[index]
+                    )
+                }
+
             }
 
+            CustomSearchbar(
+                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                hint = stringResource(id = R.string.poet_name),
+                searchText = searchText,
+                onValueChange = viewModel::onSearchTextChange,
+                onSearchClick = {
+                    keyboardController?.hide()
+                }
+            )
         }
+
+
+
     }
 
 
