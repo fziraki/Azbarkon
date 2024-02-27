@@ -2,6 +2,7 @@ package abkabk.azbarkon.features.poet.poet_list
 
 import abkabk.azbarkon.R
 import abkabk.azbarkon.ui.theme.AzbarkonTheme
+import abkabk.azbarkon.utils.noRippleClickable
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -24,18 +24,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlin.reflect.KFunction1
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CustomSearchbar(
     modifier: Modifier,
     hint: String,
     searchText: String,
     onValueChange: KFunction1<String, Unit>,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onClearClick: () -> Unit
 ){
 
     val isKeyboardOpen = WindowInsets.isImeVisible
 
+    val containerColor = AzbarkonTheme.colors.background.copy(alpha = 0.7f)
     TextFieldPaddingLess(
         value = searchText,
         onValueChange = { onValueChange(it) },
@@ -50,18 +52,33 @@ fun CustomSearchbar(
                 textAlign = TextAlign.Center
             )
         },
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = AzbarkonTheme.colors.background.copy(alpha = 0.7f),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = containerColor,
+            unfocusedContainerColor = containerColor,
+            disabledContainerColor = containerColor,
+            cursorColor = AzbarkonTheme.colors.selectedPoet,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
-            cursorColor = AzbarkonTheme.colors.selectedPoet
         ),
         shape = RoundedCornerShape(10.dp),
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
+                modifier = Modifier.noRippleClickable {
+                    onSearchClick()
+                },
                 contentDescription = "search icon",
+                tint = AzbarkonTheme.colors.unSelectedNav
+            )
+        },
+        trailingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_close),
+                modifier = Modifier.noRippleClickable {
+                    onClearClick()
+                },
+                contentDescription = "close icon",
                 tint = AzbarkonTheme.colors.unSelectedNav
             )
         },

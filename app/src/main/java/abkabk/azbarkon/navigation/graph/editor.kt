@@ -1,18 +1,18 @@
 package abkabk.azbarkon.navigation.graph
 
-import abkabk.azbarkon.features.poem.poem_details.PoemDetailsScreen
+import abkabk.azbarkon.features.editor.EditorScreen
 import abkabk.azbarkon.navigation.Destinations
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.poemDetails(
+fun NavGraphBuilder.editor(
     navController: NavController,
 ) {
     composable(
-        route = Destinations.PoemDetailsScreen().route
+        route = Destinations.EditorScreen.route
     ) {
-        PoemDetailsScreen(
+        EditorScreen(
             onHomeClick = {
                 navController.navigate(Destinations.PoetListScreen.route){
                     popUpTo(navController.graph.id)

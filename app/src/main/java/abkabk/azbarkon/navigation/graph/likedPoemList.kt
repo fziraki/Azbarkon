@@ -16,6 +16,11 @@ fun NavGraphBuilder.likedPoemList(
         route = Destinations.LikedPoemsScreen.route
     ) {
         LikedPoemsScreen(
+            onHomeClick = {
+                navController.navigate(Destinations.PoetListScreen.route){
+                    popUpTo(navController.graph.id)
+                }
+            },
             onBackPressed = {
                 navController.navigateUp()
             },

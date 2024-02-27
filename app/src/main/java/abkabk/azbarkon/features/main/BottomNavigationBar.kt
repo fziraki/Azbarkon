@@ -2,18 +2,15 @@ package abkabk.azbarkon.features.main
 
 import abkabk.azbarkon.navigation.BottomNavItem
 import abkabk.azbarkon.ui.theme.AzbarkonTheme
+import abkabk.azbarkon.utils.noRippleClickable
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -47,12 +44,9 @@ fun BottomNavigationBar(
                 icon = {
                     Icon(
                         modifier = Modifier
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
-                            onItemClick(item)
-                        },
+                            .noRippleClickable {
+                                onItemClick(item)
+                            },
                         painter = painterResource(id = item.icon),
                         contentDescription = item.title
                     )

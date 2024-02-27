@@ -13,6 +13,11 @@ fun NavGraphBuilder.poetDetails(
         route = Destinations.PoetDetailsScreen().route
     ) {
         PoetDetailsScreen(
+            onHomeClick = {
+                navController.navigate(Destinations.PoetListScreen.route){
+                    popUpTo(navController.graph.id)
+                }
+            },
             onBackPressed = {
                 navController.navigateUp()
             },

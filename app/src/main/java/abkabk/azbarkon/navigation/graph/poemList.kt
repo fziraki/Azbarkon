@@ -21,6 +21,11 @@ fun NavGraphBuilder.poemList(
         )
     ) {
         PoemListScreen(
+            onHomeClick = {
+                navController.navigate(Destinations.PoetListScreen.route){
+                    popUpTo(navController.graph.id)
+                }
+            },
             onBackPressed = {
                 navController.navigateUp()
             },

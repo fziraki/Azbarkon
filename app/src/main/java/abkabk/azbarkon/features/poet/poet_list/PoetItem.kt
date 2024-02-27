@@ -3,7 +3,6 @@ package abkabk.azbarkon.features.poet.poet_list
 import abkabk.azbarkon.R
 import abkabk.azbarkon.features.poet.model.PoetUi
 import abkabk.azbarkon.ui.theme.AzbarkonTheme
-import abkabk.azbarkon.utils.Constants
 import abkabk.azbarkon.utils.LoadImage
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -38,7 +37,7 @@ fun PoetItem(
 
     Card(
         border = if (poet.isSelected){
-            BorderStroke(3.dp, color = AzbarkonTheme.colors.unSelectedNav)
+            BorderStroke(3.dp, color = AzbarkonTheme.colors.poetBorder)
         }else{
             BorderStroke(3.dp, color = Color.Transparent)
         },

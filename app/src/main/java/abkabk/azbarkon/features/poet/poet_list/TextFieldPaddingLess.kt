@@ -83,26 +83,26 @@ fun TextFieldPaddingLess(
         maxLines = maxLines,
         decorationBox = @Composable { innerTextField ->
             // places leading icon, text field with label and placeholder, trailing icon
-            TextFieldDefaults.TextFieldDecorationBox(
+            TextFieldDefaults.DecorationBox(
                 value = value,
-                visualTransformation = visualTransformation,
                 innerTextField = innerTextField,
-                placeholder = placeholder,
+                enabled = enabled,
+                singleLine = singleLine,
+                visualTransformation = visualTransformation,
+                interactionSource = interactionSource,
+                isError = isError,
                 label = label,
+                placeholder = placeholder,
                 leadingIcon = leadingIcon,
                 trailingIcon = trailingIcon,
-                singleLine = singleLine,
-                enabled = enabled,
-                isError = isError,
-                interactionSource = interactionSource,
-                colors = colors,
                 shape = shape,
+                colors = colors,
                 contentPadding = PaddingValues(
                     top = 12.dp,
                     bottom = 6.dp,
                     start = 8.dp,
                     end = 8.dp
-                )
+                ),
             )
         }
     )

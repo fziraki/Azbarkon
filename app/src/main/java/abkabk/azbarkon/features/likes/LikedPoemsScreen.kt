@@ -3,7 +3,7 @@ package abkabk.azbarkon.features.likes
 import abkabk.azbarkon.R
 import abkabk.azbarkon.features.poem.model.PoemDetailsUi
 import abkabk.azbarkon.features.poem.poem_list.PoemItem
-import abkabk.azbarkon.features.poem.poem_list.Toolbar2
+import abkabk.azbarkon.library.designsystem.base.Toolbar
 import abkabk.azbarkon.ui.theme.AzbarkonTheme
 import abkabk.azbarkon.utils.collectAsLifecycleAwareState
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LikedPoemsScreen(
+    onHomeClick: () -> Unit,
     onBackPressed: () -> Unit,
     onNavigateToPoemDetails: (PoemDetailsUi) -> Unit,
     viewModel: LikesViewModel = hiltViewModel()
@@ -37,8 +38,9 @@ fun LikedPoemsScreen(
 
     Scaffold(
         topBar = {
-            Toolbar2(
+            Toolbar(
                 title = stringResource(id = R.string.likes),
+                onHomeClick = onHomeClick,
                 onBackPressed = onBackPressed
             )
         },
