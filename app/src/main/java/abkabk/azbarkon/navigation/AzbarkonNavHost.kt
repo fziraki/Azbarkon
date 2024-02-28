@@ -1,11 +1,13 @@
 package abkabk.azbarkon.navigation
 
 import abkabk.azbarkon.navigation.graph.editor
+import abkabk.azbarkon.navigation.graph.entertainment
 import abkabk.azbarkon.navigation.graph.likedPoemList
 import abkabk.azbarkon.navigation.graph.poemDetails
 import abkabk.azbarkon.navigation.graph.poemList
 import abkabk.azbarkon.navigation.graph.poetDetails
 import abkabk.azbarkon.navigation.graph.poetList
+import abkabk.azbarkon.navigation.graph.search
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
@@ -35,5 +37,7 @@ fun AzbarkonNavHost(
         poemDetails(navController)
         likedPoemList(navController)
         editor(navController)
+        search(navController)
+        entertainment(navController)
     }
 }

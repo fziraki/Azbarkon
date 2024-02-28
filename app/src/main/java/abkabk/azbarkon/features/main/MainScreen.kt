@@ -32,9 +32,21 @@ fun MainScreen() {
             badgeCount = 0
         ),
         BottomNavItem(
+            title = "search",
+            route = Destinations.SearchScreen.route,
+            icon = R.drawable.ic_search,
+            badgeCount = 0
+        ),
+        BottomNavItem(
             title = "poets",
             route = Destinations.PoetListScreen.route,
             icon = R.drawable.ic_home,
+            badgeCount = 0
+        ),
+        BottomNavItem(
+            title = "entertainment",
+            route = Destinations.EntertainmentScreen.route,
+            icon = R.drawable.ic_games,
             badgeCount = 0
         ),
         BottomNavItem(
@@ -51,8 +63,11 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     showBottomBar = when (navBackStackEntry?.destination?.route) {
-        Destinations.PoetListScreen.route -> true
         Destinations.LikedPoemsScreen.route -> true
+        Destinations.SearchScreen.route -> true
+        Destinations.PoetListScreen.route -> true
+        Destinations.EntertainmentScreen.route -> true
+        Destinations.EditorScreen.route -> true
         else -> false
     }
 

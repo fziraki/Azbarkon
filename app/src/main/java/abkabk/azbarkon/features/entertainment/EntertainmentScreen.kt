@@ -1,4 +1,4 @@
-package abkabk.azbarkon.features.editor
+package abkabk.azbarkon.features.entertainment
 
 import abkabk.azbarkon.R
 import abkabk.azbarkon.library.designsystem.base.Toolbar
@@ -13,16 +13,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun EditorScreen(
+fun EntertainmentScreen(
     onHomeClick: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: EditorViewModel = hiltViewModel()
-){
+    viewModel: EntertainmentViewModel = hiltViewModel()
+) {
 
     Scaffold(
         topBar = {
             Toolbar(
-                title = stringResource(id = R.string.editor),
+                title = stringResource(id = R.string.entertainment),
                 onHomeClick = onHomeClick,
                 onBackPressed = onBackPressed
             )
@@ -35,4 +35,9 @@ fun EditorScreen(
         }
 
     }
+
+
 }
+
+
+
