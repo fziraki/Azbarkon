@@ -2,7 +2,7 @@ package abkabk.azbarkon.common.data.repository
 
 import abkabk.azbarkon.common.data.local.LikeDao
 import abkabk.azbarkon.common.domain.repository.LikedPoemRepository
-import abkabk.azbarkon.features.poem.domain.PoemDetails
+import abkabk.azbarkon.features.entertainment.domain.PoemDetails
 import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

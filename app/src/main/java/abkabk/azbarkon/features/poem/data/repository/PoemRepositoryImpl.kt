@@ -41,7 +41,6 @@ class PoemRepositoryImpl @Inject constructor(
 
         try {
             val remotePoemDetails = poemApi.getPoemDetails(poemId)
-
             emit(Resource.Success(remotePoemDetails.toPoemDetails()))
         }catch (e: HttpException){
             emit(Resource.Error(

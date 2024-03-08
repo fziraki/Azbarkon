@@ -31,13 +31,13 @@ object PoemModule {
 
     @Provides
     @ViewModelScoped
-    fun providePoemRepository(poemApi: PoemApi): PoemRepository{
+    fun providePoemRepository(poemApi: PoemApi): PoemRepository {
         return PoemRepositoryImpl(poemApi)
     }
 
     @Provides
     @ViewModelScoped
-    fun providePoemAPi(retrofit: Retrofit): PoemApi{
+    fun providePoemAPi(retrofit: Retrofit): PoemApi {
         return retrofit.create(PoemApi::class.java)
     }
 }

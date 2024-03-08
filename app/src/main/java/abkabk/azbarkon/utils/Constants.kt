@@ -9,5 +9,6 @@ object Constants {
     const val MY_SELECTION = "mySelection"
     const val POET_KEY = "poet"
     const val POEM = "poem"
+    const val HAFEZ = "https://api.ganjoor.net/api/ganjoor/poet/image/hafez.gif"
 
 }

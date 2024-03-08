@@ -1,6 +1,6 @@
 package abkabk.azbarkon.common.data.local
 
-import abkabk.azbarkon.features.poem.domain.PoemDetails
+import abkabk.azbarkon.features.entertainment.domain.PoemDetails
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -13,7 +13,7 @@ data class LikeEntity(
     val htmlText: String?,
     val shortTitle: String?
 ) {
-    fun toPoemDetails() : PoemDetails{
+    fun toPoemDetails() : PoemDetails {
         return PoemDetails(
             id = id,
             fullTitle = fullTitle,

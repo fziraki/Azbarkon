@@ -8,6 +8,9 @@
     <string name="search">جستجو</string>
     <string name="poem_search">جستجوی شعر…</string>
     <string name="entertainment">سرگرمی</string>
+    <string name="faal">فال حافظ</string>
+    <string name="guess_next">مصرع بعد؟</string>
+    <string name="guess_poet">نام شاعر؟</string>
 
 
     <string name="bad_request">bad request</string>

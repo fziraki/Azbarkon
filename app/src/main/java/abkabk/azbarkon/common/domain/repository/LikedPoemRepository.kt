@@ -1,6 +1,6 @@
 package abkabk.azbarkon.common.domain.repository
 
-import abkabk.azbarkon.features.poem.domain.PoemDetails
+import abkabk.azbarkon.features.entertainment.domain.PoemDetails
 import abkabk.azbarkon.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
