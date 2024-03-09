@@ -28,6 +28,11 @@ enum class DefaultColorsVariant : ColorVariant {
         override val dark: Color = brown_8b7160
     },
 
+    Highlight {
+        override val light: Color = green_528b7e
+        override val dark: Color = green_528b7e
+    },
+
     OnSurface {
         override val light: Color = black
         override val dark: Color = brown_603913
@@ -68,6 +73,7 @@ enum class DefaultColorsVariant : ColorVariant {
 @Immutable
 data class Colors(
     val background: Color,
+    val highlight: Color,
     val onSurface: Color,
     val poetBg: Color,
     val pinTint: Color,
@@ -81,6 +87,7 @@ data class Colors(
 object DefaultColors {
     val lightColors: Colors = Colors(
         background = DefaultColorsVariant.Background.light,
+        highlight = DefaultColorsVariant.Highlight.light,
         onSurface = DefaultColorsVariant.OnSurface.light,
         poetBg = DefaultColorsVariant.PoetBg.light,
         pinTint = DefaultColorsVariant.PinTint.light,
@@ -93,6 +100,7 @@ object DefaultColors {
 
     val darkColors: Colors = Colors(
         background = DefaultColorsVariant.Background.dark,
+        highlight = DefaultColorsVariant.Highlight.dark,
         onSurface = DefaultColorsVariant.OnSurface.dark,
         poetBg = DefaultColorsVariant.PoetBg.dark,
         pinTint = DefaultColorsVariant.PinTint.dark,

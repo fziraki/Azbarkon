@@ -1,6 +1,6 @@
 package abkabk.azbarkon.navigation.graph
 
-import abkabk.azbarkon.features.search.SearchScreen
+import abkabk.azbarkon.features.search.presentation.SearchScreen
 import abkabk.azbarkon.navigation.Destinations
 import abkabk.azbarkon.navigation.navigate
 import abkabk.azbarkon.utils.navToJson

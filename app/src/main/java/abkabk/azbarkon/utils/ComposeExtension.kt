@@ -1,5 +1,6 @@
 package abkabk.azbarkon.utils
 
+import abkabk.azbarkon.ui.theme.AzbarkonTheme
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,6 +17,9 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -119,4 +123,23 @@ fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
         interactionSource = remember { MutableInteractionSource() }) {
         onClick()
     }
+}
+
+@Composable
+fun String.highlightWord(
+    searchQuery: String
+): AnnotatedString {
+
+    var annotatedString = buildAnnotatedString {}
+    this.let {
+        annotatedString = buildAnnotatedString { append(it) }
+    }
+    annotatedString = buildAnnotatedString {
+        val startIndex = annotatedString.indexOf(searchQuery)
+        val endIndex = startIndex + searchQuery.length
+        append(annotatedString)
+        addStyle(style = SpanStyle(color = AzbarkonTheme.colors.highlight), start = startIndex, end = endIndex)
+    }
+
+    return annotatedString
 }
