@@ -66,7 +66,9 @@ fun SearchScreen(
 
 
 
-        Box(modifier = Modifier.fillMaxSize().padding(top = it.calculateTopPadding(), bottom = it.calculateBottomPadding()), contentAlignment = Alignment.BottomCenter) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(top = it.calculateTopPadding(), bottom = it.calculateBottomPadding()), contentAlignment = Alignment.BottomCenter) {
 
             if (uiState.value.isInitialized){
                 lazyPagingPoemsByFilter?.let {
@@ -102,8 +104,9 @@ fun SearchScreen(
 fun SearchResult(
     lazyPagingPoemsByFilter: LazyPagingItems<PoemDetails>,
     onNavigateToPoemDetails: (PoemDetails) -> Unit,
-    searchText: String
+    searchText: String,
 ) {
+
 
 
     LazyColumn(
@@ -122,12 +125,12 @@ fun SearchResult(
                 poem?.let {
                     var thePart = ""
                     val splittedList = poem.plainText?.split("\n")
-                    val firstIndex = splittedList?.indexOfFirst { it.contains(searchText)}
+                    val firstIndex = splittedList?.indexOfFirst { it.contains(searchText)}.takeIf { it != -1 }
                     firstIndex?.let {index ->
                         thePart = if (index.rem(2) ==0){
-                            splittedList[index].plus("\n").plus(splittedList[index+1])
+                            splittedList?.get(index).plus("\n").plus(splittedList?.get(index+1))
                         }else{
-                            splittedList[index-1].plus("\n").plus(splittedList[index])
+                            splittedList?.get(index-1).plus("\n").plus(splittedList?.get(index))
                         }
                     }
                     if (thePart.isNotEmpty()){
@@ -144,7 +147,6 @@ fun SearchResult(
                             searchedPart = thePart
                         )
                     }
-
                 }
             }
 
@@ -156,6 +158,7 @@ fun SearchResult(
 //                            onState(BaseState.OnLoading)
                 }
                 else -> {
+
 //                            onState(BaseState.OnSuccess)
                 }
             }

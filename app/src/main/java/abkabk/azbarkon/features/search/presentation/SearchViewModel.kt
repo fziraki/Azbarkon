@@ -96,7 +96,6 @@ class SearchViewModel @Inject constructor(
     }
 
     sealed interface Events : Event {
-
     }
 
 
